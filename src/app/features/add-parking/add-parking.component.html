@@ -1,0 +1,139 @@
+<!-- Content -->
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Add New Parking</h4>
+
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Add Parking</h5>
+                </div>
+                <div class="card-body">
+                    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Name</label>
+                            <div class="input-group input-group-merge">
+                                <span id="nameIcon" class="input-group-text"><i class='bx bxs-parking'></i></span>
+                                <input type="text" class="form-control" id="name"
+                                    placeholder="Name" aria-label="Name"
+                                    aria-describedby="nameIcon" 
+                                    name="name" #nameInput="ngModel" [(ngModel)]="parking.nomParcking" required minlength="3" maxlength="100"/><br />
+                            </div>
+                            <div *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)" class="form-text">
+                                <div *ngIf="nameInput.errors?.['required']">Name is required.</div>
+                                <div *ngIf="nameInput.errors?.['minlength']">Name must be at least 3 characters long.</div>
+                                <div *ngIf="nameInput.errors?.['maxlength']">Name cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="latitude">Latitude</label>
+                            <div class="input-group input-group-merge">
+                                <span id="latitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
+                                <input type="number" class="form-control" id="latitude"
+                                    placeholder="Latitude" aria-label="Latitude"
+                                    aria-describedby="latitudeIcon" 
+                                    name="latitude" #latitudeInput="ngModel" [(ngModel)]="parking.latitude" required pattern="^-?\d+(\.\d+)?$"/>
+                            </div>
+                            <div *ngIf="latitudeInput.invalid && (latitudeInput.dirty || latitudeInput.touched)"  class="form-text">
+                                <div *ngIf="latitudeInput.errors?.['required']">Latitude is required.</div>
+                                <div *ngIf="latitudeInput.errors?.['pattern']">Latitude must be a valid number.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="longitude">Longitude</label>
+                            <div class="input-group input-group-merge">
+                                <span id="longitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
+                                <input type="number" class="form-control" id="longitude"
+                                    placeholder="Longitude" aria-label="Longitude"
+                                    aria-describedby="longitudeIcon" 
+                                    name="longitude" #longitudeInput="ngModel" [(ngModel)]="parking.longitude" required pattern="^-?\d+(\.\d+)?$"/>
+                            </div>
+                            <div *ngIf="longitudeInput.invalid && (longitudeInput.dirty || longitudeInput.touched)"  class="form-text">
+                                <div *ngIf="longitudeInput.errors?.['required']">Longitude is required.</div>
+                                <div *ngIf="longitudeInput.errors?.['pattern']">Longitude must be a valid number.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="adresse">Address</label>
+                            <div class="input-group input-group-merge">
+                                <span id="adresseIcon" class="input-group-text"><i class='bx bxs-location-plus' ></i></span>
+                                <input type="text" id="adresse" class="form-control"
+                                    placeholder="Address" aria-label="Address"
+                                    aria-describedby="adresseIcon" 
+                                    name="adresse" #adresseInput="ngModel" [(ngModel)]="parking.adresse" required minlength="5" maxlength="100"/>
+                            </div>
+                            <div *ngIf="adresseInput.invalid && (adresseInput.dirty || adresseInput.touched)"  class="form-text">
+                                <div *ngIf="adresseInput.errors?.['required']">Address is required.</div>
+                                <div *ngIf="adresseInput.errors?.['minlength']">Address must be at least 5 characters long.</div>
+                                <div *ngIf="nameInput.errors?.['maxlength']">Address cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="surface">Surface</label>
+                            <div class="input-group input-group-merge">
+                                <span id="surfaceIcon" class="input-group-text"><i class='bx bx-space-bar' ></i></span>
+                                <input type="number" id="surface" class="form-control"
+                                    placeholder="Surface" aria-label="Surface"
+                                    aria-describedby="surfaceIcon" 
+                                    name="surface" #surfaceInput="ngModel" [(ngModel)]="parking.surface" required min="50"/>
+                            </div>
+                            <div *ngIf="surfaceInput.invalid && (surfaceInput.dirty || surfaceInput.touched)"  class="form-text">
+                                <div *ngIf="surfaceInput.errors?.['required']">Surface is required.</div>
+                                <div *ngIf="surfaceInput.errors?.['min']">Surface must be at least 50.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="timeStartWork">Time Start Work</label>
+                            <div class="input-group input-group-merge">
+                                <span id="timeStartWorkIcon" class="input-group-text"><i class='bx bxs-time' ></i></span>
+                                <input type="time" value="08:00:00" id="timeStartWork" class="form-control"
+                                    placeholder="Time Start Work" aria-label="Time Start Work"
+                                    aria-describedby="timeStartWorkIcon" 
+                                    name="timeStartWork" #timeStartWorkInput="ngModel" [(ngModel)]="parking.timeStartWork" required/>
+                            </div>
+                            <div *ngIf="timeStartWorkInput.invalid && (timeStartWorkInput.dirty || timeStartWorkInput.touched)" class="form-text">
+                                <div *ngIf="timeStartWorkInput.errors?.['required']">Time Start Work is required.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="timeEndWork">Time End Work</label>
+                            <div class="input-group input-group-merge">
+                                <span id="timeEndWorkIcon" class="input-group-text"><i class='bx bxs-time' ></i></span>
+                                <input type="time" value="17:00:00" id="timeEndWork" class="form-control"
+                                    placeholder="Time End Work" aria-label="Time End Work"
+                                    aria-describedby="timeEndWorkIcon" 
+                                    name="timeEndWork" #timeEndWorkInput="ngModel" [(ngModel)]="parking.timeEndWork" required/>
+                            </div>
+                            <div *ngIf="timeEndWorkInput.invalid && (timeEndWorkInput.dirty || timeEndWorkInput.touched)"  class="form-text">
+                                <div *ngIf="timeEndWorkInput.errors?.['required']">Time End Work is required.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="creationDate">Creation Date</label>
+                            <div class="input-group input-group-merge">
+                                <span id="creationDateIcon" class="input-group-text"><i class='bx bxs-calendar' ></i></span>
+                                <input type="date" value="2021-06-18" id="creationDate" class="form-control"
+                                    placeholder="Creation Date" aria-label="Creation Date"
+                                    aria-describedby="creationDateIcon" 
+                                    name="creationDate" #creationDateInput="ngModel" [(ngModel)]="parking.creationDate" required/>
+                            </div>
+                            <div *ngIf="creationDateInput.invalid && (creationDateInput.dirty || creationDateInput.touched)"  class="form-text">
+                                <div *ngIf="creationDateInput.errors?.['required']">Creation Date is required.</div>
+                            </div>
+                        </div><br>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="isWorking" 
+                            name="isWorking" #isWorkingInput="ngModel" [(ngModel)]="parking.isWorking"/>
+                            <label class="form-check-label" for="isWorking">Parking Is Working </label>
+                        </div><br>
+                        
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / Content -->

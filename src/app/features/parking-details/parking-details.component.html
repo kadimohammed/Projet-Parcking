@@ -1,0 +1,85 @@
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y" style="width: 80%;">
+    <h4 class="fw-bold py-3 mb-4">Parking Details</h4>
+    <button [routerLink]="['/parkings']" type="button" class="btn btn-primary" style="margin-bottom: 10px;">Back To List</button><br>
+    <div class="row">
+      <!-- Inline text elements -->
+      <div class="col">
+        <div class="card mb-4">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td class="align-middle"><small class="text-light fw-semibold">Id</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.id}}</div>
+                  </td>
+                </tr>
+                <tr>
+                    <td class="align-middle"><small class="text-light fw-semibold">Nom</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.nomParcking}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">Latitude</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.latitude}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">Longitude</small></td>
+                    <td class="rowtable">
+                        <div class="alert alert-primary" role="alert">{{parking.longitude}}</div>
+                    </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">Adresse</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.adresse}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">Surface</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.surface | number:'1.2-2'}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">TimeStartWork</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.timeStartWork | timeFormat}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">TimeEndWork</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.timeEndWork | timeFormat}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><small class="text-light fw-semibold">CreationDate</small></td>
+                  <td class="rowtable">
+                    <div class="alert alert-primary" role="alert">{{parking.creationDate | date}}</div>
+                  </td>
+                </tr>
+                <tr>
+                    <td><small class="text-light fw-semibold">IsWorking</small></td>
+                    <td class="rowtable">
+                        @if(parking.isWorking){
+                            <div class="alert alert-success" role="alert">Active</div>
+                        }@else {
+                            <div class="alert alert-danger" role="alert">No Active</div>
+                        }
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+  <!-- / Content -->

@@ -1,0 +1,13 @@
+/* parking-list.component.css */
+.container-xxl {
+    margin-top: 0px !important; /* Assurez-vous que le margin-top est à 0 */
+  }
+
+
+.bx-trash{
+  color: brown;
+}
+
+.bxs-detail{
+  color: rgb(152, 141, 39);
+}
