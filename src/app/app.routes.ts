@@ -8,15 +8,19 @@ import { ListParckingComponent } from './features/list-parcking/list-parcking.co
 import { AddParkingComponent } from './features/add-parking/add-parking.component';
 import { ParkingDetailsComponent } from './features/parking-details/parking-details.component';
 import { EditParkingComponent } from './features/edit-parking/edit-parking.component';
+import { authGuard } from './core/guards/auth.guard';
+import { ListArtisanComponent } from './features/list-artisan/list-artisan.component';
+import { AddArtisanComponent } from './features/add-artisan/add-artisan.component';
+import { EditArtisanComponent } from './features/edit-artisan/update-artisan.component';
 
 export const routes: Routes = [
     {
         path: '',
-            component: LayoutComponent
+            component: LayoutComponent,canActivate: [authGuard],
     },
     {
         path: 'home',
-        component: LayoutComponent,
+        component: LayoutComponent,canActivate: [authGuard],
         children: [
             {
                 path: '',
@@ -34,7 +38,7 @@ export const routes: Routes = [
     },
     {
         path: 'parkings',
-        component: LayoutComponent,
+        component: LayoutComponent,canActivate: [authGuard],
         children: [
             {
                 path: '',
@@ -55,6 +59,32 @@ export const routes: Routes = [
             {
                 path: 'details/:id',
                 component: ParkingDetailsComponent
+            }
+        ]
+    },
+    {
+        path: 'Artisans',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ListArtisanComponent
+            },
+            {
+                path: 'list',
+                component: ListArtisanComponent
+            },
+            {
+                path: 'add',
+                component: AddArtisanComponent
+            },
+            {
+                path: 'edit/:id',
+                component: EditArtisanComponent
+            },
+            {
+                path: 'details/:id',
+                component: EditArtisanComponent
             }
         ]
     },

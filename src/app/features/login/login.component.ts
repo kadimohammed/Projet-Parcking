@@ -1,25 +1,47 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm} from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { Login } from '../../core/ViewModels/Login.model';
+import { AuthService } from '../../core/services/auth.service';
+import { AdminService } from '../../core/services/admin.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink,NgIf,FormsModule],
+  imports: [RouterLink, NgIf, FormsModule, NgClass],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  constructor(private titleService: Title) {}
+  user: Login = {} as Login;
+  errorMessage = '';
+
+  constructor(
+    private titleService: Title,
+    private authService: AuthService,
+    private router: Router,
+    private adminService : AdminService
+  ) {}
 
   ngOnInit(): void {
     this.titleService.setTitle('Login');
   }
 
-  Login(loginForm: NgForm):void{
-    console.log(loginForm);
+  onSubmit(myForm: NgForm) {
+    if (myForm.valid) {
+      this.authService.loginuser(this.user).subscribe({
+        next: (response) => {
+          this.adminService.setUser(response);
+          this.router.navigate(['/parkings']);
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+        }
+      });
+    } else {
+      this.errorMessage = 'Please fill all required fields correctly.';
+    }
   }
 }

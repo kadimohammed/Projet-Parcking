@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Parking } from '../../core/models/parcking.model';
 import { CommonModule, NgFor } from '@angular/common';
-import { ParkingService } from '../../core/services/ParkingService';
+import { ParkingService } from '../../core/services/parking.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
+import { ListPakingVM } from '../../core/ViewModels/ListPakingVM';
+import { Parking } from '../../core/models/parcking.model';
 
 @Component({
   selector: 'app-list-parcking',
@@ -16,23 +17,54 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 export class ListParckingComponent implements OnInit {
 
   parkings: Parking[] = [];
+  totalCount: number = 0;
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 0;
 
   constructor(private parkingService: ParkingService) { }
-  @ViewChild(MatPaginator) paginator! : MatPaginator;
 
   ngOnInit(): void {
-    console.log("ngOnInit() method called");
-    this.parkingService.getParkings().subscribe(
+    this.loadParkings();
+  }
+
+  loadParkings(): void {
+    this.parkingService.getParkings(this.currentPage, this.pageSize).subscribe(
       data => {
-        console.log("Data received in component:", data);
-        this.parkings = data;
+        if (data) {
+          this.parkings = data.items;
+          this.totalCount = data.totalCount;
+          console.log("count="+this.totalCount);
+          this.totalPages = Math.ceil(this.totalCount / this.pageSize);
+        } else {
+          console.error("Invalid data format:", data);
+        }
       },
       error => {
-        console.error("Error occurred while fetching data:", error);
+        console.error("Error occurred while fetching parkings:", error);
       }
     );
   }
 
+  onPageChange(pageNumber: number): void {
+    if (pageNumber < 1 || pageNumber > this.totalPages) {
+      return;
+    }
+    this.currentPage = pageNumber;
+    this.loadParkings();
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.onPageChange(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.onPageChange(this.currentPage + 1);
+    }
+  }
 
   deleteParking(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce parking ?')) {
@@ -47,6 +79,42 @@ export class ListParckingComponent implements OnInit {
         }
       );
     }
+  }
+
+
+  getPages(): number[] {
+    const pages = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+
+
+  searchParkings(text:string){
+    if (text.trim() === '') {
+      this.loadParkings();
+    } 
+    else
+    {
+      this.parkingService.searchParkings(text).subscribe(
+        data => {
+          if (data) {
+            this.parkings = data.items;
+            this.totalCount = data.totalCount;
+            console.log("count="+this.totalCount);
+            this.totalPages = Math.ceil(this.totalCount / this.pageSize);
+          } else {
+            console.error("Invalid data format:", data);
+          }
+        },
+        error => {
+          console.error("Error occurred while fetching parkings:", error);
+        }
+      );
+    }
+    
   }
 
 }

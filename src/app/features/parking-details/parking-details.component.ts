@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ParkingDetails } from '../../core/models/ParkingDetails.model';
+import { ParkingDetails } from '../../core/ViewModels/ParkingDetails.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ParkingService } from '../../core/services/ParkingService';
+import { ParkingService } from '../../core/services/parking.service';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 

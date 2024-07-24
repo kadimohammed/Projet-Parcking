@@ -1,8 +1,8 @@
 <!-- Content -->
-
 <div class="container-xxl">
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">{{errorMessage }}</div>
       <!-- Register -->
       <div class="card">
         <div class="card-body">
@@ -53,19 +53,24 @@
                   </g>
                 </svg>
               </span>
-              <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+              <span class="app-brand-text demo text-body fw-bolder">LYPARK</span>
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-2">Welcome to Sneat! 👋</h4>
-          <p class="mb-4">Please sign-in to your account and start the adventure</p>
-          {{email.value}} - {{password.value}}
-          <form id="formAuthentication" class="mb-3" method="POST" #LoginForm="ngForm">
+          <h4 class="mb-2">Welcome to LYPARK!</h4>
+          <!-- <p class="mb-4">Please sign-in to your account and start the adventure</p> -->
+          <form id="formAuthentication" class="mb-3" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <div class="mb-3">
-              <label for="email" class="form-label">Email or Username</label>
-              <input type="text" class="form-control" id="email" name="email-username" 
-                placeholder="Enter your email or username" autofocus ngModel #email="ngModel" />
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email"
+                placeholder="Enter your email" 
+                name="email" #emailInput="ngModel" [(ngModel)]="user.email" required email  />
+                <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="form-text">
+                  <div *ngIf="emailInput.errors?.['required']">email is required.</div>
+                  <div *ngIf="emailInput.errors?.['email']">Invalid email format.</div>
+                </div>
             </div>
+            
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Password</label>
@@ -74,10 +79,16 @@
                 </a>
               </div>
               <div class="input-group input-group-merge">
-                <input type="password" id="password" class="form-control" name="password"
-                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                  aria-describedby="password" ngModel #password="ngModel" />
-                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                <input type="password" id="password" class="form-control"
+                  placeholder="......."
+                  aria-describedby="password"
+                  name="password" #passwordInput="ngModel" [(ngModel)]="user.password" required  minlength="8" appPasswordStrength />
+                  <span class="input-group-text cursor-pointer"><i class="bx bx-show"></i></span>
+              </div>
+              <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="form-text">
+                <div *ngIf="passwordInput.errors?.['required']">passwordInput is required.</div>
+                <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
+                <div *ngIf="passwordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
               </div>
             </div>
             <div class="mb-3">
@@ -87,16 +98,15 @@
               </div>
             </div>
             <div class="mb-3">
-              <button (click)="Login(LoginForm)" class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+              <button type="submit" [disabled]="!myForm.valid" class="btn btn-primary d-grid w-100">Sign in</button>
             </div>
           </form>
-
-          <p class="text-center">
+          <!-- <p class="text-center">
             <span>New on our platform?</span>
             <a href="auth-register-basic.html">
               <span>Create an account</span>
             </a>
-          </p>
+          </p> -->
         </div>
       </div>
       <!-- /Register -->

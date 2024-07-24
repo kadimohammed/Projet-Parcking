@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Parking } from '../../core/models/parcking.model';
-import { ParkingService } from '../../core/services/ParkingService';
+import { ParkingService } from '../../core/services/parking.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

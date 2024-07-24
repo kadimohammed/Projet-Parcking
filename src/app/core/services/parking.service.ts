@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Parking } from '../models/parcking.model'; // Assurez-vous d'avoir un modèle Parking
-import { ParkingDetails } from '../models/ParkingDetails.model';
+import { ParkingDetails } from '../ViewModels/ParkingDetails.model';
+import { ListPakingVM } from '../ViewModels/ListPakingVM';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,16 @@ export class ParkingService {
 
   constructor(private http: HttpClient) { }
 
-  getParkings(): Observable<Parking[]> {
-    console.log("getParkings() method called");
-    return this.http.get<Parking[]>(this.apiUrl).pipe(
-      tap(data => console.log("Data received from API:", data))
-    );
+  getParkings(page: number, size: number): Observable<ListPakingVM> {
+    console.log(page+"  "+size);
+    let params = new HttpParams().set('pageNumber', page).set('pageSize', size);
+    return this.http.get<ListPakingVM>(this.apiUrl, { params });
+  }
+
+  searchParkings(text:string): Observable<ListPakingVM> {
+    console.log("search text : " + text);
+    let params = new HttpParams().set('text', text);
+    return this.http.get<ListPakingVM>(this.apiUrl+"/search", { params });
   }
 
   // Méthode pour obtenir un parking par ID

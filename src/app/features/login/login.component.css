@@ -1,1 +1,12 @@
 @import '../../../../public/assets/vendor/css/pages/page-auth.css';
+
+
+.form-text{
+    color: brown;
+}
+
+
+.invalid-input {
+    border: 1px solid red;
+  }
+  
