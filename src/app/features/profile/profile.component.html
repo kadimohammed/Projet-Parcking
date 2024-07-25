@@ -1,0 +1,131 @@
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div style="background-image: url('{{admin.coverPhoto}}');background-size: cover;">
+                    <h5 class="card-header">Profile</h5>
+                    <!-- Account -->
+                    <div class="card-body">
+                        @if(Message[0] && Message[1]){
+                            <div class="alert alert-success" role="alert">{{Message[0]}}</div>
+                        }
+                        @else if(Message[0] && !Message[1]){
+                            <div class="alert alert-danger" role="alert">{{Message[0]}}</div>
+                        }
+                        
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img src="{{adminPhoto}}" alt="user-avatar" class="d-block rounded" height="100" width="100"
+                                id="uploadedAvatar" />
+                            <div class="button-wrapper">
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                    <span class="d-none d-sm-block">Upload new photo</span>
+                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                    <input type="file" id="upload" class="account-file-input" hidden
+                                        accept="image/png, image/jpeg" />
+                                </label>
+                                <label class="btn btn-secondary me-2 mb-4">
+                                    <span class="d-none d-sm-block">Reset</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-0" />
+                <div class="card-body">
+                    <form id="formPasswordSettings" #myForm="ngForm" (ngSubmit)="onChangeProfile(myForm)">
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input class="form-control" type="text" id="firstName" name="firstName" value="John"
+                                #firstNameInput="ngModel" [(ngModel)]="adminProfile.prenom" required minlength="3" maxlength="100" />
+                                <div *ngIf="firstNameInput.invalid && (firstNameInput.dirty || firstNameInput.touched)" class="form-text">
+                                    <div *ngIf="firstNameInput.errors?.['required']">Name is required.</div>
+                                    <div *ngIf="firstNameInput.errors?.['minlength']">Name must be at least 3 characters long.</div>
+                                    <div *ngIf="firstNameInput.errors?.['maxlength']">Name cannot be more than 100 characters long.</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input class="form-control" type="text" name="lastName" id="lastName"
+                                #lastNameInput="ngModel" [(ngModel)]="adminProfile.nom" required minlength="3" maxlength="100"/>
+                                <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="form-text">
+                                    <div *ngIf="lastNameInput.errors?.['required']">Name is required.</div>
+                                    <div *ngIf="lastNameInput.errors?.['minlength']">Name must be at least 3 characters long.</div>
+                                    <div *ngIf="lastNameInput.errors?.['maxlength']">Name cannot be more than 100 characters long.</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input class="form-control" type="text" id="email" name="email"
+                                    placeholder="john.doe@example.com" 
+                                    #emailInput="ngModel" [(ngModel)]="adminProfile.email" required email/>
+                                <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="form-text">
+                                    <div *ngIf="emailInput.errors?.['required']">email is required.</div>
+                                    <div *ngIf="emailInput.errors?.['email']">Invalid email format.</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="tel" class="form-label">Telephone</label>
+                                <input type="tel" class="form-control" id="tel" name="tel"
+                                       #telInput="ngModel" [(ngModel)]="adminProfile.tel" required pattern="^[0-9]{10}$" />
+                                <div *ngIf="telInput.invalid && (telInput.dirty || telInput.touched)" class="form-text">
+                                    <div *ngIf="telInput.errors?.['required']">Telephone is required.</div>
+                                    <div *ngIf="telInput.errors?.['pattern']">Invalid telephone format. Must be 10 digits.</div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" [disabled]="myForm.invalid || !myForm.dirty || !myForm.touched" class="btn btn-primary me-2">Save changes</button>
+                            <button type="button" (click)="onCancelChangeProfile()" class="btn btn-outline-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <form id="formProfileSettings" #myForm1="ngForm" (ngSubmit)="onChangePassword(myForm1)">
+                        <div>
+                            <div class="mb-3 col-md-6">
+                                <label for="OldPassword" class="form-label">Old Password</label>
+                                <input class="form-control" type="password" id="OldPassword" name="OldPassword"
+                                #OldPasswordInput="ngModel" [(ngModel)]="adminPassword.oldPassword" required  minlength="8" appPasswordStrength  />
+                                <div *ngIf="OldPasswordInput.invalid && (OldPasswordInput.dirty || OldPasswordInput.touched)" class="form-text">
+                                    <div *ngIf="OldPasswordInput.errors?.['required']">passwordInput is required.</div>
+                                    <div *ngIf="OldPasswordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
+                                    <div *ngIf="OldPasswordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
+                                </div>
+                            </div>  
+                            <div class="mb-3 col-md-6">
+                                <label for="NewPassword" class="form-label">New Password</label>
+                                <input class="form-control" type="password" id="NewPassword" name="NewPassword"
+                                #NewPasswordInput="ngModel" [(ngModel)]="adminPassword.newPassword" required  minlength="8" appPasswordStrength  />
+                                <div *ngIf="NewPasswordInput.invalid && (NewPasswordInput.dirty || NewPasswordInput.touched)" class="form-text">
+                                    <div *ngIf="NewPasswordInput.errors?.['required']">passwordInput is required.</div>
+                                    <div *ngIf="NewPasswordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
+                                    <div *ngIf="NewPasswordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
+                                </div>
+                            </div> 
+                            <div class="mb-3 col-md-6">
+                                <label for="ConfirmNewPassword" class="form-label">Confirm New Password</label>
+                                <input class="form-control" type="password" id="ConfirmNewPassword" name="ConfirmNewPassword"
+                                #ConfirmNewPasswordInput="ngModel" [(ngModel)]="adminPassword.confirmPassword" required  minlength="8" appPasswordStrength  />
+                                <div *ngIf="ConfirmNewPasswordInput.invalid && (ConfirmNewPasswordInput.dirty || ConfirmNewPasswordInput.touched)" class="form-text">
+                                    <div *ngIf="ConfirmNewPasswordInput.errors?.['required']">passwordInput is required.</div>
+                                    <div *ngIf="ConfirmNewPasswordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
+                                    <div *ngIf="ConfirmNewPasswordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
+                                </div>
+                            </div>                         
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" [disabled]="!myForm1.valid" class="btn btn-primary me-2">change Password</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /Account -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / Content -->

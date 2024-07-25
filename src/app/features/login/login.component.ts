@@ -4,8 +4,7 @@ import { FormsModule, NgForm} from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Login } from '../../core/ViewModels/Login.model';
-import { AuthService } from '../../core/services/auth.service';
-import { AdminService } from '../../core/services/admin.service';
+import { AuthService } from '../../core/services/adminauth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,6 @@ export class LoginComponent implements OnInit {
     private titleService: Title,
     private authService: AuthService,
     private router: Router,
-    private adminService : AdminService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +31,7 @@ export class LoginComponent implements OnInit {
     if (myForm.valid) {
       this.authService.loginuser(this.user).subscribe({
         next: (response) => {
-          this.adminService.setUser(response);
+          this.authService.setUser(response);
           this.router.navigate(['/parkings']);
         },
         error: (error) => {

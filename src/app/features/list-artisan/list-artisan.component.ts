@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { CommonModule, NgFor } from '@angular/common';
@@ -13,17 +13,15 @@ import { Artisan } from '../../core/models/Artisan.model';
   templateUrl: './list-artisan.component.html',
   styleUrl: './list-artisan.component.css'
 })
-export class ListArtisanComponent {
+export class ListArtisanComponent implements OnInit {
 
   Artisans: ArtisansListVM[] = [];
 
   constructor(private artisanService: ArtisanService) { }
 
   ngOnInit(): void {
-    console.log("ngOnInit() method called");
     this.artisanService.getArtisans().subscribe(
       data => {
-        console.log("Data received in component:", data);
         this.Artisans = data;
       },
       error => {

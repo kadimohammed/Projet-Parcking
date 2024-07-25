@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Admin } from '../../../core/models/admin.model';
-import { AdminService } from '../../../core/services/admin.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/adminauth.service';
 import { NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor,RouterLink],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent implements OnInit {
   admin: Admin = {} as Admin;
 
-  constructor(private adminService: AdminService,private authService:AuthService) { }
+  constructor(private authService:AuthService) { }
 
   ngOnInit() {
-    this.admin = this.adminService.getUser();
+    this.admin = this.authService.getUser();
   }
 
   logOut(){

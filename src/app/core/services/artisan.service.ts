@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Artisan } from '../models/Artisan.model';
 import { Observable, tap } from 'rxjs';
+import { ArtisansTopVM } from '../ViewModels/ArtisansTopVM';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,13 @@ export class ArtisanService {
   getArtisans(): Observable<Artisan[]> {
     console.log("getParkings() method called");
     return this.http.get<Artisan[]>(this.apiUrl).pipe(
+      tap(data => console.log("Data received from API:", data))
+    );
+  }
+
+
+  getTopArtisans(): Observable<ArtisansTopVM[]> {
+    return this.http.get<ArtisansTopVM[]>(this.apiUrl+"/top").pipe(
       tap(data => console.log("Data received from API:", data))
     );
   }

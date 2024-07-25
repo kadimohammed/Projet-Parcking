@@ -8,6 +8,14 @@
   
     <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;margin-bottom: 10px;">
       <button [routerLink]="['/Artisans','add']" type="button" class="btn btn-primary" style="height: 40px;">Add New</button>
+      <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+        <label class="form-check-label" for="flexSwitchCheckChecked">Artisan Active</label>
+      </div>
+      <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+        <label class="form-check-label" for="flexSwitchCheckChecked">Artisan Non Active</label>
+      </div>
       <div class="input-group input-group-merge" style="width: 30% ;">
         <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
         <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon-search31">

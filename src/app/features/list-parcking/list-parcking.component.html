@@ -8,6 +8,14 @@
 
   <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;margin-bottom: 10px;">
     <button [routerLink]="['/parkings','add']" type="button" class="btn btn-primary" style="height: 40px;">Add New</button>
+    <div class="form-check form-switch mb-2">
+      <input (change)="getParkingsActive($event)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+      <label class="form-check-label" for="flexSwitchCheckChecked">Parcking Active</label>
+    </div>
+    <div class="form-check form-switch mb-2">
+      <input (change)="getParkingsNonActive($event)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+      <label class="form-check-label" for="flexSwitchCheckChecked">Parcking Non Active</label>
+    </div>
     <div class="input-group input-group-merge" style="width: 30% ;">
       <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
       <input #textToSearch (input)="searchParkings(textToSearch.value)" type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon-search31">
@@ -62,9 +70,36 @@
   </div>
   <!--/ Basic Bootstrap Table -->
 
+  
 
   <nav aria-label="Page navigation" style="margin-top:10px">
+    
     <ul class="pagination justify-content-end">
+      <li>
+        <div class="btn-group" id="dropdown-icon-demo">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+           {{pageSize}}
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a (click)="changePageSize(5)" href="javascript:void(0);" class="dropdown-item d-flex align-items-center">5</a>
+            </li>
+            <li>
+              <a (click)="changePageSize(10)" class="dropdown-item d-flex align-items-center">10</a>
+            </li>
+            <li>
+              <a (click)="changePageSize(20)" class="dropdown-item d-flex align-items-center">20</a>
+            </li>
+            <li>
+              <a (click)="changePageSize(50)" class="dropdown-item d-flex align-items-center">50</a>
+            </li>
+            <li>
+              <a (click)="changePageSize(100)" class="dropdown-item d-flex align-items-center">100</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      
       <!-- Previous Page Button -->
       <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
         <a class="page-link" href="javascript:void(0);" (click)="prevPage()">

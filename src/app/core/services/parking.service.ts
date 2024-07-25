@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Parking } from '../models/parcking.model'; // Assurez-vous d'avoir un modèle Parking
 import { ParkingDetails } from '../ViewModels/ParkingDetails.model';
 import { ListPakingVM } from '../ViewModels/ListPakingVM';
+import { ParkingTopVM } from '../ViewModels/ParkingTopVM';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +15,20 @@ export class ParkingService {
 
   constructor(private http: HttpClient) { }
 
-  getParkings(page: number, size: number): Observable<ListPakingVM> {
-    console.log(page+"  "+size);
-    let params = new HttpParams().set('pageNumber', page).set('pageSize', size);
-    return this.http.get<ListPakingVM>(this.apiUrl, { params });
-  }
+  getParkings(page: number, size: number, text: string, active?: boolean): Observable<ListPakingVM> {
+    console.log(page + " " + size);
+    let params = new HttpParams()
+        .set('text', text)
+        .set('pageNumber', page)
+        .set('pageSize', size);
 
-  searchParkings(text:string): Observable<ListPakingVM> {
-    console.log("search text : " + text);
-    let params = new HttpParams().set('text', text);
-    return this.http.get<ListPakingVM>(this.apiUrl+"/search", { params });
-  }
+    if (active !== undefined) {
+        params = params.set('active', active.toString());
+    }
+
+    return this.http.get<ListPakingVM>(this.apiUrl, { params });
+}
+
 
   // Méthode pour obtenir un parking par ID
   getParking(id: number): Observable<ParkingDetails> {
@@ -44,5 +48,11 @@ export class ParkingService {
    // Méthode pour mettre à jour un parking
   updateParking(parking: Parking): Observable<Parking> {
     return this.http.put<Parking>(`${this.apiUrl}/${parking.id}`, parking);
+  }
+
+  getTopParkings(): Observable<ParkingTopVM[]> {
+    return this.http.get<ParkingTopVM[]>(this.apiUrl+"/top").pipe(
+      tap(data => console.log("Data received from API:", data))
+    );
   }
 }

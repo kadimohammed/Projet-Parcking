@@ -12,6 +12,8 @@ import { authGuard } from './core/guards/auth.guard';
 import { ListArtisanComponent } from './features/list-artisan/list-artisan.component';
 import { AddArtisanComponent } from './features/add-artisan/add-artisan.component';
 import { EditArtisanComponent } from './features/edit-artisan/update-artisan.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { ParkingsMapsComponent } from './features/parkings-maps/parkings-maps.component';
 
 export const routes: Routes = [
     {
@@ -89,6 +91,26 @@ export const routes: Routes = [
         ]
     },
     {
+        path: 'profile',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ProfileComponent
+            }
+        ]
+    },
+    {
+        path: 'parkingsmap',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ParkingsMapsComponent
+            }
+        ]
+    },
+    {
         path: 'login',
             component: LoginComponent
     },
@@ -96,6 +118,8 @@ export const routes: Routes = [
         path: '**',
             component: Eror404Component
     }
+    
+
     
     
 ];

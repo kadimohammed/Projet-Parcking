@@ -1,54 +1,155 @@
 <!-- Content -->
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">UI Elements /</span> Cards Basic</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">NEWS /</span> Tendency</h4>
 
     <!-- Examples -->
+    <h5 class="pb-1 mb-4">TOP Artisan</h5>
     <div class="row mb-5">
-      <div class="col-md-6 col-lg-4 mb-3">
-        <div class="card h-100">
-          <img class="card-img-top" src="../assets/img/elements/2.jpg" alt="Card image cap" />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <a href="javascript:void(0)" class="btn btn-outline-primary">Go somewhere</a>
+      @for (ar of artisansTop; track ar.id) {
+        <div class="col-md-6 col-xl-4">
+          <div class="card mb-3">
+            <img class="card-img-top" src="{{ar.photo}}" alt="Card image cap" />
+            <div class="card-body">
+              <div style="display: flex; align-items: center;justify-content: space-between;">
+                <h5 class="card-title">{{ar.nom}} {{ar.prenom}}</h5>
+                <span class="badge badge-center rounded-pill bg-primary">{{ar.rating}}</span>
+              </div>
+              <p class="card-text">
+                {{ar.profession}}
+              </p>
+              <p><span class="badge bg-success">{{ar.artisanClientServices?.length}} Services</span><br></p>
+              <p class="card-text">
+                <small class="text-muted"><b>{{ar.anneeExperience}}</b> Year experience</small>
+              </p>
+              <div style="display: flex;justify-content: end;">
+                <button type="button" class="btn btn-secondary">Go somewhere</button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      }
+      
+    </div>
+    <!-- Examples -->
+
+    <!-- Style variation -->
+    <h5 class="pb-1 mb-4">Top Parkings</h5>
+    <div class="row">
+      @for (pr of parkingsTop; track pr.id;let i = $index;) {
+        <div class="col-md-6 col-xl-4">
+          <div class="card text-white mb-3" [ngClass]="getCardClass(i)">
+            <div class="card-body">
+              <div style="display: flex;justify-content: space-between;">
+                <h5 class="card-title text-white">{{pr.nomParcking}} </h5>
+                <p>{{pr.creationDate}}</p>
+                <span class="badge badge-center rounded-pill bg-secondary">{{pr.lots.length}}</span>
+              </div>
+              <p class="card-text">{{pr.adresse}}</p>
+              <p>Time Work : <b>{{pr.timeStartWork | timeFormat}} - {{pr.timeEndWork | timeFormat}}</b></p><br>
+              <span class="badge bg-label-dark">{{pr.artisanClientServices.length}} Service</span><br><br>
+              <span class="badge bg-label-dark">{{pr.surface | number:'1.2-2'}} metre</span>
+            </div>
+            <div class="card-header" style="display: flex;justify-content: end;">
+              <button type="button" class="btn rounded-pill btn-dark map-btn" ><i class='bx bx-location-plus' style='color:#ffffff'></i></button>
+            </div>
+          </div>
+        </div>
+      }
+    </div><br>
+    <!--/ Style variation -->
+
+
+
+    <div>
+      <!-- Horizontal -->
+    <h5 class="pb-1 mb-4">Loyal Customer</h5>
+    <div class="row mb-5">
+      <div class="col-md">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img class="card-img card-img-left" src="../assets/img/elements/12.jpg" alt="Card image" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">
+                  This is a wider card with supporting text below as a natural lead-in to additional content.
+                  This content is a little bit longer.
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-4 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-          </div>
-          <img class="img-fluid" src="../assets/img/elements/13.jpg" alt="Card image cap" />
-          <div class="card-body">
-            <p class="card-text">Bear claw sesame snaps gummies chocolate.</p>
-            <a href="javascript:void(0);" class="card-link">Card link</a>
-            <a href="javascript:void(0);" class="card-link">Another link</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-            <img
-              class="img-fluid d-flex mx-auto my-4"
-              src="../assets/img/elements/4.jpg"
-              alt="Card image cap"
-            />
-            <p class="card-text">Bear claw sesame snaps gummies chocolate.</p>
-            <a href="javascript:void(0);" class="card-link">Card link</a>
-            <a href="javascript:void(0);" class="card-link">Another link</a>
+      <div class="col-md">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">
+                  This is a wider card with supporting text below as a natural lead-in to additional content.
+                  This content is a little bit longer.
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img class="card-img card-img-right" src="../assets/img/elements/17.jpg" alt="Card image" />
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Examples -->
+    <div class="row mb-5">
+      <div class="col-md">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img class="card-img card-img-left" src="../assets/img/elements/12.jpg" alt="Card image" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">
+                  This is a wider card with supporting text below as a natural lead-in to additional content.
+                  This content is a little bit longer.
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">
+                  This is a wider card with supporting text below as a natural lead-in to additional content.
+                  This content is a little bit longer.
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img class="card-img card-img-right" src="../assets/img/elements/17.jpg" alt="Card image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Horizontal -->
+    </div>
+    
+
+
 
     <!-- Content types -->
     <h5 class="pb-1 mb-4">Content types</h5>
@@ -248,161 +349,6 @@
       </div>
     </div>
     <!--/ Images -->
-
-    <!-- Horizontal -->
-    <h5 class="pb-1 mb-4">Horizontal</h5>
-    <div class="row mb-5">
-      <div class="col-md">
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img class="card-img card-img-left" src="../assets/img/elements/12.jpg" alt="Card image" />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  This is a wider card with supporting text below as a natural lead-in to additional content.
-                  This content is a little bit longer.
-                </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  This is a wider card with supporting text below as a natural lead-in to additional content.
-                  This content is a little bit longer.
-                </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <img class="card-img card-img-right" src="../assets/img/elements/17.jpg" alt="Card image" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/ Horizontal -->
-
-    <!-- Style variation -->
-    <h5 class="pb-1 mb-4">Style variation</h5>
-    <div class="row">
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-primary text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Primary card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-secondary text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-success text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Success card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-danger text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Danger card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-warning text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Warning card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card bg-info text-white mb-3">
-          <div class="card-header">Header</div>
-          <div class="card-body">
-            <h5 class="card-title text-white">Info card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Outline -->
-    <div class="row">
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-primary mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Primary card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-secondary mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-success mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Success card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-danger mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Danger card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-warning mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Warning card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-none bg-transparent border border-info mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Info card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/ Style variation -->
 
     <!-- Card layout -->
     <h5 class="pb-1 my-5">Card layout</h5>
