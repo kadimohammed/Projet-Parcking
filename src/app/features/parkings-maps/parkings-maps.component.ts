@@ -1,49 +1,99 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { ParkingService } from '../../core/services/parking.service';
+import { Parking } from '../../core/models/parcking.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-parkings-maps',
-  standalone: true,
-  imports: [],
   templateUrl: './parkings-maps.component.html',
-  styleUrl: './parkings-maps.component.css'
+  styleUrls: ['./parkings-maps.component.css']
 })
-export class ParkingsMapsComponent implements AfterViewInit {
+export class ParkingsMapsComponent implements OnInit {
   private map: L.Map | undefined;
+  parkingId: number  = 0
+  private parkings: Parking[] = [];
 
-  ngAfterViewInit(): void {
-    this.initMap();
+
+  constructor(private parkingService: ParkingService,private router : Router,private route: ActivatedRoute) { }
+
+  private customIcon = L.icon({
+    iconUrl: 'https://www.iconpacks.net/icons/2/free-parking-sign-icon-2526-thumb.png', // chemin vers votre icône personnalisée
+    iconSize: [50, 50], // taille de l'icône
+    iconAnchor: [19, 38], // point de l'icône qui correspondra à la position du marqueur
+    popupAnchor: [0, -38] // point du popup par rapport au point d'ancrage de l'icône
+  });
+
+  ngOnInit(): void {
+    this.parkingId = +this.route.snapshot.paramMap.get('id')!;
+    console.log(this.parkingId);
+    if(this.parkingId == 0){
+      this.loadParkings();
+    }
+    else{
+      this.loadParkingById();
+    }
+
+    
+    
   }
 
+
+  loadParkings(): void {
+    this.parkingService.getAllParkings().subscribe(
+      data => {
+        if (data) {
+          this.parkings = data;
+        } else {
+          console.error("Invalid data format:", data);
+        }
+        this.initMap();
+      },
+      error => {
+        console.error("Error occurred while fetching parkings:", error); 
+        this.initMap();
+      }
+    );
+    
+  }
+
+  loadParkingById() :void{
+    this.parkingService.getParking(this.parkingId).subscribe(
+      data => {
+        if (data) {
+          this.parkings.push(data);
+        } else {
+          console.error("Invalid data format:", data);
+        }
+        this.initMap();
+      },
+      error => {
+        console.error("Error occurred while fetching parkings:", error); 
+        this.initMap();
+      }
+    );
+  }
+
+
   private initMap(): void {
-    // Initialisation de la carte
     this.map = L.map('map', {
-      center: [51.505, -0.09],
-      zoom: 13,
-      zoomControl: true
+      center: [this.parkings[0].latitude, this.parkings[0].longitude], 
+      zoom: 13
     });
 
-    // Ajout de la couche des tuiles
+    // Utiliser les tuiles Stamen Toner pour un mode sombre gratuit
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 18,
-      tileSize: 512,
-      zoomOffset: -1
-    }).addTo(this.map);
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(this.map);
 
-    // Création du groupe de clustering de marqueurs
     const markers = L.markerClusterGroup();
 
-    // Ajout de quelques marqueurs pour l'exemple
-    const marker1 = L.marker([51.5, -0.09]);
-    const marker2 = L.marker([51.51, -0.1]);
-    markers.addLayer(marker1).addLayer(marker2);
+    for(const pr of this.parkings){
+      const marker = L.marker([pr.latitude, pr.longitude], { icon: this.customIcon }).bindPopup(`${pr.nomParcking} \n ${pr.latitude},${pr.longitude}`);
+      markers.addLayer(marker);
+    }
     this.map.addLayer(markers);
-
-    // Gestion des événements de déplacement pour éviter des opérations lourdes
-    this.map.on('moveend', () => {
-      // Code léger ici
-    });
+    
   }
 }

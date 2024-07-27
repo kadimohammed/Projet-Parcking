@@ -1,3 +1,8 @@
+import { ArtisanClientService } from "./artisan-client-service.model";
+import { Lot } from "./lot.model";
+import { ParkingJours } from "./parking-jours.model";
+import { PhotoParking } from "./PhotoParking.model";
+
 export interface Parking {
   id: number;
   latitude: number;
@@ -9,7 +14,8 @@ export interface Parking {
   timeEndWork: string;
   creationDate: Date;
   isWorking: boolean;
-  jours: any[]; 
-  lots: any[];
-  artisanClientServices: any[];
+  jours?: ParkingJours[]; 
+  lots?: Lot[];
+  artisanClientServices?: ArtisanClientService[];
+  photoParkings?: PhotoParking[];
 }

@@ -34,11 +34,11 @@
             <th>Création Date</th>
             <th>Latitude</th>
             <th>Longitude</th>
-            <!-- <th>Adresse</th> -->
             <th>Surface</th>
             <th>Début</th>
             <th>Fin</th>
             <th>State</th>
+            <th>Location</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -58,6 +58,9 @@
             }@else {
               <td><span class="badge bg-label-danger me-1">No Active</span></td>
             }
+            <td style="display: flex;justify-content: center;align-items: center;">
+              <a [routerLink]="['/parkingsmap/',parking.id]"><i class='bx bx-current-location' style='color:#001571;'></i></a>
+            </td>
             <td>
                 <a  [routerLink]="['/parkings/edit/',parking.id]"><i class="bx bx-edit-alt me-2"></i></a>
                 <a style="cursor: pointer;" (click)="deleteParking(parking.id)"><i class="bx bx-trash me-2"></i></a>

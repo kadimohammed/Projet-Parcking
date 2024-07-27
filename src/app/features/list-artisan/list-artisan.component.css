@@ -11,3 +11,8 @@
 .bxs-detail{
   color: rgb(152, 141, 39);
 }
+
+.avatar-xs {
+  width: 3rem;
+  height: 3rem;
+}

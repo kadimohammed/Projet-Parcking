@@ -1,3 +1,14 @@
 .form-text{
     color: brown;
 }
+
+.card-img-top {
+    width: 100%;
+    height: 200px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+    object-fit: cover; /* Pour s'assurer que l'image s'ajuste bien dans la zone définie */
+}
+
+
+.imageTitle{
+    font-size: 20px;
+}

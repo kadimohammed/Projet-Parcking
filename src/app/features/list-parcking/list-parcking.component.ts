@@ -145,7 +145,12 @@ export class ListParckingComponent implements OnInit {
 
 
   getParkingsEtat(){
-    if((this.parkingsActiveInput && this.parkingsNonActiveInput) || (!this.parkingsActiveInput && !this.parkingsNonActiveInput)){
+    
+    if(!this.parkingsActiveInput && !this.parkingsNonActiveInput){
+      this.parkings = [];
+      return;
+    }
+    if(this.parkingsActiveInput && this.parkingsNonActiveInput){
       this.active = undefined;
     }
     else if(this.parkingsActiveInput){

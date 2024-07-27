@@ -16,7 +16,6 @@ export class ParkingService {
   constructor(private http: HttpClient) { }
 
   getParkings(page: number, size: number, text: string, active?: boolean): Observable<ListPakingVM> {
-    console.log(page + " " + size);
     let params = new HttpParams()
         .set('text', text)
         .set('pageNumber', page)
@@ -27,7 +26,11 @@ export class ParkingService {
     }
 
     return this.http.get<ListPakingVM>(this.apiUrl, { params });
-}
+  }
+
+  getAllParkings(): Observable<Parking[]> {
+    return this.http.get<Parking[]>(this.apiUrl);
+  }
 
 
   // Méthode pour obtenir un parking par ID

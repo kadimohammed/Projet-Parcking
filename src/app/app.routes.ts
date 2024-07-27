@@ -107,6 +107,10 @@ export const routes: Routes = [
             {
                 path: '',
                 component: ParkingsMapsComponent
+            },
+            {
+                path: ':id',
+                component: ParkingsMapsComponent
             }
         ]
     },

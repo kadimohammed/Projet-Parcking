@@ -3,7 +3,6 @@ import { Image } from "./image.model";
 
 export interface ImageArtisan {
     id: number;
-    path: string;
     image: Image;
     imageId: number;
     artisan: Artisan;

@@ -1,1 +1,10 @@
+#map {
+    height: 750px;
+    width: 95%;
+    z-index: 0;
+    margin: auto;
+    filter: invert(1);
+  }
 
+  
+  
