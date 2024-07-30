@@ -35,11 +35,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/parkings']);
         },
         error: (error) => {
-          this.errorMessage = error.message;
+          this.errorMessage = 'Email or Password Incorrect';
         }
       });
     } else {
-      this.errorMessage = 'Please fill all required fields correctly.';
+      this.errorMessage = 'Email or Password Incorrect';
     }
   }
 }

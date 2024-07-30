@@ -1,0 +1,31 @@
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <app-alert-message></app-alert-message>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Add New Type Artisan</h4>
+
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Add Type Artisan</h5>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="addtypeForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label class="form-label" for="libelle">Libelle</label>
+                            <input type="text" class="form-control" id="libelle" placeholder="libelle"
+                                   formControlName="libelle"/>
+                            <div *ngIf="addtypeForm.get('libelle')?.invalid && (addtypeForm.get('libelle')?.dirty || addtypeForm.get('libelle')?.touched)" class="form-text">
+                                <div *ngIf="addtypeForm.get('libelle')?.errors?.['required']">libelle is required.</div>
+                                <div *ngIf="addtypeForm.get('libelle')?.errors?.['minlength']">libelle must be at least 3 characters long.</div>
+                                <div *ngIf="addtypeForm.get('libelle')?.errors?.['maxlength']">libelle cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" [disabled]="addtypeForm.invalid">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

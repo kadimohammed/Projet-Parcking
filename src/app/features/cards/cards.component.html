@@ -52,7 +52,7 @@
               <span class="badge bg-label-dark">{{pr.surface | number:'1.2-2'}} metre</span>
             </div>
             <div class="card-header" style="display: flex;justify-content: end;">
-              <button type="button" class="btn rounded-pill btn-dark map-btn" ><i class='bx bx-location-plus' style='color:#ffffff'></i></button>
+              <button [routerLink]="['/parkingsmap/',pr.id]" type="button" class="btn rounded-pill btn-dark map-btn" ><i class='bx bx-location-plus' style='color:#ffffff'></i></button>
             </div>
           </div>
         </div>

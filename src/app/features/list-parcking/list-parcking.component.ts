@@ -19,7 +19,7 @@ export class ListParckingComponent implements OnInit {
   parkings: Parking[] = [];
   totalCount: number = 0;
   currentPage: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 0;
   searchText : string = "";
   active? : boolean = undefined;
@@ -145,7 +145,6 @@ export class ListParckingComponent implements OnInit {
 
 
   getParkingsEtat(){
-    
     if(!this.parkingsActiveInput && !this.parkingsNonActiveInput){
       this.parkings = [];
       return;

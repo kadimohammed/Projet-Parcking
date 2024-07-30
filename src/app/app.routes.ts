@@ -14,6 +14,9 @@ import { AddArtisanComponent } from './features/add-artisan/add-artisan.componen
 import { EditArtisanComponent } from './features/edit-artisan/update-artisan.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { ParkingsMapsComponent } from './features/parkings-maps/parkings-maps.component';
+import { ListTypeArtisanComponent } from './features/list-type-artisan/list-type-artisan.component';
+import { AddTypeArtisanComponent } from './features/add-type-artisan/add-type-artisan.component';
+import { UpdateTypeArtisanComponent } from './features/edit-type-artisan/edit-type-artisan.component';
 
 export const routes: Routes = [
     {
@@ -87,6 +90,28 @@ export const routes: Routes = [
             {
                 path: 'details/:id',
                 component: EditArtisanComponent
+            }
+        ]
+    },
+    {
+        path: 'typesArtisan',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ListTypeArtisanComponent
+            },
+            {
+                path: 'list',
+                component: ListTypeArtisanComponent
+            },
+            {
+                path: 'add',
+                component: AddTypeArtisanComponent
+            },
+            {
+                path: 'edit/:id',
+                component: UpdateTypeArtisanComponent
             }
         ]
     },

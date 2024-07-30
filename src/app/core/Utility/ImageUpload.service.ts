@@ -53,4 +53,6 @@ export class ImageUploadService {
       form.get('photoParkings')?.setErrors({ required: true });
     }
   }
+  
+  
 }

@@ -5,11 +5,12 @@ import { ParkingService } from '../../core/services/parking.service';
 import { ParkingTopVM } from '../../core/ViewModels/ParkingTopVM';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule,TimeFormatPipe],
+  imports: [CommonModule,TimeFormatPipe,RouterLink],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.css'
 })

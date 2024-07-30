@@ -6,7 +6,7 @@ import { ParkingService } from '../../core/services/parking.service';
 import { Router } from '@angular/router';
 import { AddParkingVM } from '../../core/ViewModels/AddParkingVM';
 import { ParkingFormService } from '../../core/FormService/ParkingForm.service';
-import { ImageUploadService } from '../../core/Utility/ImageUpload.services';
+import { ImageUploadService } from '../../core/Utility/ImageUpload.service';
 
 @Component({
   selector: 'app-add-parking',
@@ -30,20 +30,18 @@ export class AddParkingComponent implements OnInit {
       console.log(this.addParkingForm?.value);
       const parkingData: AddParkingVM = this.addParkingForm.value;
 
-      // this.parking.timeStartWork = this.formatTime(this.parking.timeStartWork);
-      // this.parking.timeEndWork = this.formatTime(this.parking.timeEndWork);
+      parkingData.timeStartWork = this.formatTime(parkingData.timeStartWork);
+      parkingData.timeEndWork = this.formatTime(parkingData.timeEndWork);
 
-      // this.parkingModel = this.parkingMapperService.mapAddParkingVMToParking(this.parking);
-
-      // this.parkingservice.addParking(this.parkingModel).subscribe(
-      //   response => {
-      //     console.log('Parking added successfully:', response);
-      //     this.router.navigate(['/parkings']);
-      //   },
-      //   error => {
-      //     console.error('Error adding parking:', error);
-      //   }
-      // );
+      this.parkingservice.addParking(parkingData).subscribe(
+        response => {
+          console.log('Parking added successfully:', response);
+          this.router.navigate(['/parkings']);
+        },
+        error => {
+          console.error('Error adding parking:', error);
+        }
+      );
     }
   }
 

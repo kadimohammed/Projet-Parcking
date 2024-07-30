@@ -1,12 +1,12 @@
 // services/parking-form.service.ts
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Jours } from '../models/jours.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParkingFormService {
-
   constructor(private fb: FormBuilder) { }
 
   createAddParkingForm(): FormGroup {
@@ -20,9 +20,13 @@ export class ParkingFormService {
         timeEndWork: ['', Validators.required],
         creationDate: ['', Validators.required],
         isWorking: [false],
-        jours: [null],
-        photoParkings: [null, Validators.required] 
+        // jours: this.fb.array(this.createDaysArray()),
+        // photoParkings: [null, Validators.required] 
     });
+  }
+
+  createDaysArray(): FormControl[] {
+    return Object.keys(Jours).map(day => this.fb.control(false));
   }
 
   

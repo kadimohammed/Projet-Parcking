@@ -74,6 +74,10 @@
         </a>
       </li>
 
+      <li class="menu-header small text-uppercase">
+        <span class="menu-header-text">Parkings</span>
+      </li>
+
       <!-- Parckings -->
       <li class="menu-item" routerLinkActive="active">
         <a [routerLink]="['/parkings']" class="menu-link">
@@ -81,12 +85,25 @@
           <div data-i18n="Layouts">Parckings</div>
         </a>
       </li>
-
-      <!-- Clients -->
+      <!-- Parking Map -->
       <li class="menu-item" routerLinkActive="active">
-        <a [routerLink]="['/home', 'Clients']" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-user"></i> <!-- Icône de profil ou utilisateur -->
-          <div data-i18n="Layouts">Clients</div>
+        <a [routerLink]="['/parkingsmap']" class="menu-link">
+          <i class='menu-icon tf-icons bx bxs-map-pin'></i> <!-- Icône de catégorie ou type -->
+          <div data-i18n="Layouts">Parking Map</div>
+        </a>
+      </li>
+
+
+
+      <li class="menu-header small text-uppercase">
+        <span class="menu-header-text">Artisans</span>
+      </li>
+
+      <!-- Types -->
+      <li class="menu-item" routerLinkActive="active">
+        <a [routerLink]="['/typesArtisan']" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-category"></i> <!-- Icône de profil ou utilisateur -->
+          <div data-i18n="Layouts">Types</div>
         </a>
       </li>
 
@@ -97,16 +114,6 @@
           <div data-i18n="Layouts"> Artisans</div>
         </a>
       </li>
-
-      <!-- TypeArtisan -->
-      <li class="menu-item" routerLinkActive="active">
-        <a [routerLink]="['/parkingsmap']" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-category"></i> <!-- Icône de catégorie ou type -->
-          <div data-i18n="Layouts">Parking Map</div>
-        </a>
-      </li>
-
-
 
       
 

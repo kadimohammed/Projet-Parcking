@@ -21,3 +21,8 @@
 .alert{
   text-align: center;
 }
+
+.actionColumn{
+  display: flex;
+  align-items: center;justify-content: space-between;
+}

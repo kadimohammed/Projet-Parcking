@@ -1,0 +1,11 @@
+<div style="display: flex;align-items: center;justify-content: center;">
+    @if(message.message != ''){
+        @if(!message.state){
+            <div class="alert alert-danger" role="alert">{{message.message}}</div>
+        }
+        @else {
+            <div class="alert alert-success" role="alert">{{message.message}}</div>
+        }
+    }    
+</div>
+

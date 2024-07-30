@@ -33,10 +33,7 @@ export class ParkingsMapsComponent implements OnInit {
     }
     else{
       this.loadParkingById();
-    }
-
-    
-    
+    }   
   }
 
 

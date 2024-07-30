@@ -6,6 +6,7 @@ import { Parking } from '../models/parcking.model'; // Assurez-vous d'avoir un m
 import { ParkingDetails } from '../ViewModels/ParkingDetails.model';
 import { ListPakingVM } from '../ViewModels/ListPakingVM';
 import { ParkingTopVM } from '../ViewModels/ParkingTopVM';
+import { AddParkingVM } from '../ViewModels/AddParkingVM';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +45,8 @@ export class ParkingService {
     return this.http.delete<void>(url);
   }
 
-  addParking(parking: Parking): Observable<Parking> {
-    return this.http.post<Parking>(`${this.apiUrl}`, parking);
+  addParking(parking: AddParkingVM): Observable<AddParkingVM> {
+    return this.http.post<AddParkingVM>(`${this.apiUrl}`, parking);
   }
 
    // Méthode pour mettre à jour un parking
