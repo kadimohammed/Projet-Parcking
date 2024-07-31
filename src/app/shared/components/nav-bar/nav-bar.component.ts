@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Admin } from '../../../core/models/admin.model';
-import { AuthService } from '../../../core/services/adminauth.service';
+import { AuthService } from '../../../core/services/AuthService.service';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 

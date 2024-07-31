@@ -28,6 +28,9 @@ export class ArtisanTypesService {
           case 500:
             this.errorMessage = `Erreur 500: Erreur interne du serveur lors du chargement des Artisan Types.`;
             break;
+          case 401:
+              this.errorMessage = `vous ete pas autorizer`;
+              break;
           default:
             this.errorMessage = `Erreur ${error.status}: Une erreur est survenue lors du ${error.message}.`;
         }

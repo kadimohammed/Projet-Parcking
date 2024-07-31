@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Admin } from '../../core/models/admin.model';
-import { AuthService } from '../../core/services/adminauth.service';
+import { AuthService } from '../../core/services/AuthService.service';
 import { NgIf } from '@angular/common';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ChangeProfileAdminVM } from '../../core/ViewModels/ChangeProfileAdminVM';
@@ -58,14 +58,6 @@ export class ProfileComponent implements OnInit {
       },
       error => {
         this.changeMessage('There was an error updating the Password!',false);
-        console.log(this.authService.errorMessage.error);
-        if (this.authService.errorMessage instanceof ErrorEvent) {
-          console.log("Client-Side Error:", error.error.message);
-        } else {
-          // Erreur côté serveur
-          console.log("Server-Side Error:", error.status);
-          console.log("Error Message:", error.error.message);
-        }
       }
     );
   }

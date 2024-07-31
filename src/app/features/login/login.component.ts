@@ -4,7 +4,9 @@ import { FormsModule, NgForm} from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Login } from '../../core/ViewModels/Login.model';
-import { AuthService } from '../../core/services/adminauth.service';
+import { AuthService } from '../../core/services/AuthService.service';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +23,7 @@ export class LoginComponent implements OnInit {
     private titleService: Title,
     private authService: AuthService,
     private router: Router,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -28,14 +31,17 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(myForm: NgForm) {
+    this.loadingService.show();
     if (myForm.valid) {
       this.authService.loginuser(this.user).subscribe({
         next: (response) => {
           this.authService.setUser(response);
           this.router.navigate(['/parkings']);
+          this.loadingService.hide();
         },
         error: (error) => {
-          this.errorMessage = 'Email or Password Incorrect';
+          this.errorMessage = this.authService.errorMessage ;
+          this.loadingService.hide();
         }
       });
     } else {

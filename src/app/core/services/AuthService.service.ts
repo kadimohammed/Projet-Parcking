@@ -6,56 +6,79 @@ import { Login } from '../ViewModels/Login.model';
 import { ChangeProfileAdminVM } from '../ViewModels/ChangeProfileAdminVM';
 import { Admin } from '../models/admin.model';
 import { ChangePasswordAdminVM } from '../ViewModels/ChangePasswordAdminVM';
+import { logintTkenVM } from '../ViewModels/logintokenVM';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'https://localhost:7009/api/Admin';
-  private Token : string = 'admin';
+  private key : string = 'admin';
+  private adminUser : logintTkenVM = {} as logintTkenVM;
+  public errorMessage : string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  loginuser(loginModel: Login): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}`, loginModel).pipe(
+  loginuser(loginModel: Login): Observable<logintTkenVM> {
+    return this.http.post<logintTkenVM>(`${this.baseUrl}`, loginModel).pipe(
       tap(response => {
-        this.login(response);
+        localStorage.setItem(this.key, JSON.stringify(response));
+        this.adminUser = response;
       }),
-      catchError(this.handleError)
-    );
-  }
-
-  login(response: any): void {
-    localStorage.setItem(this.Token, JSON.stringify(response));
+      catchError((error: HttpErrorResponse) => {
+        switch (error.status) {
+          case 0:
+            this.errorMessage = `Connexion impossible au serveur.`;
+            break;
+          case 404:
+            this.errorMessage = `Ressource non trouvée lors du SignIn.`;
+            break;
+          case 500:
+            this.errorMessage = `Erreur 500: Erreur interne du serveur lors lors du SignIn.`;
+            break;
+          case 400:
+              this.errorMessage = `Email Or Password Invalid !!`;
+              break;
+          default:
+            this.errorMessage = `Erreur: Une erreur est survenue.`;
+        }
+        return throwError(() => new Error(this.errorMessage));
+      }
+    ));
   }
   
+  
   logout(): void {
-    localStorage.removeItem(this.Token);
+    localStorage.removeItem(this.key);
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.Token);
+    return !!localStorage.getItem(this.key);
   }
 
   setUser(admin: Admin) {
-    localStorage.setItem(this.Token, JSON.stringify(admin));
+    localStorage.setItem(this.key, JSON.stringify(admin));
   }
 
   getUser() {
-    const user = localStorage.getItem(this.Token);
+    const user = localStorage.getItem(this.key);
     return user ? JSON.parse(user) : null;
+  }
+
+  getToken() {
+    return this.adminUser.token;
   }
 
   changeProfile(profile: ChangeProfileAdminVM): Observable<any> {
     return this.http.put(`${this.baseUrl}`, profile).pipe(
       tap(() => {
-        let admin = JSON.parse(localStorage.getItem(this.Token) || '{}');
+        let admin = JSON.parse(localStorage.getItem(this.key) || '{}');
         admin.nom = profile.nom;
         admin.prenom = profile.prenom;
         admin.email = profile.email;
         admin.tel = profile.tel;
-        localStorage.setItem(this.Token, JSON.stringify(admin));
+        localStorage.setItem(this.key, JSON.stringify(admin));
       }),
       catchError(this.handleError)
     );
@@ -70,14 +93,10 @@ export class AuthService {
     );
   }
 
-  public errorMessage: HttpErrorResponse = {} as HttpErrorResponse;
+  
 
   private handleError(error: HttpErrorResponse) {
-    console.log("errrrrrrrrrrrrrr");
-    this.errorMessage = error;
-    console.log("errrrrrrrrrrrrrr");
     return throwError(() => new Error(error.error));
-   
   }
 
 }
