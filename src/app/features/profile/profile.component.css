@@ -2,6 +2,22 @@
     color: brown;
 }
 
-.alert{
-    text-align: center;
+.card-profile{
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+
+.CoverDiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.fullCover{
+    font-size: 40px; 
+    color: aliceblue;
 }

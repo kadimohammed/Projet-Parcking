@@ -89,7 +89,25 @@ export class AuthService {
       tap(() => {
         console.log("password bien modifier");
       }),
-      catchError(this.handleError)
+      catchError((error: HttpErrorResponse) => {
+        switch (error.status) {
+          case 0:
+            this.errorMessage = `Connexion impossible au serveur.`;
+            break;
+          case 404:
+            this.errorMessage = `Ressource non trouvée lors du changement du password.`;
+            break;
+          case 500:
+            this.errorMessage = `Erreur interne du serveur lors du changement du password.`;
+            break;
+          case 400:
+              this.errorMessage = `400`;
+              break;
+          default:
+            this.errorMessage = `Une erreur est survenue.`;
+        }
+        return throwError(() => new Error(this.errorMessage));
+      })
     );
   }
 

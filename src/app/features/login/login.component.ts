@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
     if (myForm.valid) {
       this.authService.loginuser(this.user).subscribe({
         next: (response) => {
-          this.authService.setUser(response);
           this.router.navigate(['/parkings']);
           this.loadingService.hide();
         },

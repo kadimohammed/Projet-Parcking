@@ -1,20 +1,14 @@
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+    <app-alert-message></app-alert-message>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div style="background-image: url('{{admin.coverPhoto}}');background-size: cover;">
                     <h5 class="card-header"></h5>
                     <!-- Account -->
-                    <div class="card-body">
-                        @if(Message[0] && Message[1]){
-                            <div class="alert alert-success" role="alert">{{Message[0]}}</div>
-                        }
-                        @else if(Message[0] && !Message[1]){
-                            <div class="alert alert-danger" role="alert">{{Message[0]}}</div>
-                        }
-                        
+                    <div class="card-body card-profile">
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
                             <img src="{{adminPhoto}}" alt="user-avatar" class="d-block rounded" height="100" width="100"
                                 id="uploadedAvatar" />
@@ -25,14 +19,23 @@
                                     <input type="file" id="upload" class="account-file-input" hidden
                                         accept="image/png, image/jpeg" />
                                 </label>
-                                <label class="btn btn-secondary me-2 mb-4">
-                                    <span class="d-none d-sm-block">Reset</span>
-                                </label>
                             </div>
+                        </div>
+                        
+                    </div>
+                    <div class="CoverDiv">
+                        <div>
+                            <p class="fw-bold py-3 mb-4 fullCover">{{admin.prenom | uppercase }} {{admin.nom | uppercase }}</p>
+                        </div>
+                        <div style="margin-bottom: 18px;">
+                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                <span class="d-none d-sm-block">Change Cover</span>
+                                <input type="file" id="upload" class="account-file-input" hidden
+                                    accept="image/png, image/jpeg" />
+                            </label>
                         </div>
                     </div>
                 </div>
-                
                 <hr class="my-0" />
                 <div class="card-body">
                     <form id="formPasswordSettings" #myForm="ngForm" (ngSubmit)="onChangeProfile(myForm)">
@@ -95,6 +98,7 @@
                                     <div *ngIf="OldPasswordInput.errors?.['required']">passwordInput is required.</div>
                                     <div *ngIf="OldPasswordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
                                     <div *ngIf="OldPasswordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
+                                    <div *ngIf="OldPasswordInput.errors?.['oldPasswordIncorect']">Old Password Incorrect.</div>
                                 </div>
                             </div>  
                             <div class="mb-3 col-md-6">
@@ -115,6 +119,7 @@
                                     <div *ngIf="ConfirmNewPasswordInput.errors?.['required']">passwordInput is required.</div>
                                     <div *ngIf="ConfirmNewPasswordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
                                     <div *ngIf="ConfirmNewPasswordInput.errors?.['passwordStrength']">Password must contain a mix of uppercase, lowercase, numbers, and special characters.</div>
+                                    <div *ngIf="ConfirmNewPasswordInput.errors?.['passwordMismatch']">Passwords do not match.</div>
                                 </div>
                             </div>                         
                         </div>

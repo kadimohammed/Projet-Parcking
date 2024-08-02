@@ -17,6 +17,7 @@ import { ParkingsMapsComponent } from './features/parkings-maps/parkings-maps.co
 import { ListTypeArtisanComponent } from './features/list-type-artisan/list-type-artisan.component';
 import { AddTypeArtisanComponent } from './features/add-type-artisan/add-type-artisan.component';
 import { UpdateTypeArtisanComponent } from './features/edit-type-artisan/edit-type-artisan.component';
+import { ParkingTopViewComponent } from './Khaireddine/parking-top-view/parking-top-view.component';
 
 export const routes: Routes = [
     {
@@ -112,6 +113,26 @@ export const routes: Routes = [
             {
                 path: 'edit/:id',
                 component: UpdateTypeArtisanComponent
+            }
+        ]
+    },
+    {
+        path: 'topview',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ParkingTopViewComponent
+            }
+        ]
+    },
+    {
+        path: 'cameraview',
+        component: LayoutComponent,canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                component: ParkingTopViewComponent
             }
         ]
     },
