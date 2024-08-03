@@ -18,6 +18,8 @@ import { ListTypeArtisanComponent } from './features/list-type-artisan/list-type
 import { AddTypeArtisanComponent } from './features/add-type-artisan/add-type-artisan.component';
 import { UpdateTypeArtisanComponent } from './features/edit-type-artisan/edit-type-artisan.component';
 import { ParkingTopViewComponent } from './Khaireddine/parking-top-view/parking-top-view.component';
+import { CameraViewComponent } from './features/camera-view/camera-view.component';
+import { AlertMessageComponent } from './features/alert-message/alert-message.component';
 
 export const routes: Routes = [
     {
@@ -123,6 +125,10 @@ export const routes: Routes = [
             {
                 path: '',
                 component: ParkingTopViewComponent
+            },
+            {
+                path: ':id',
+                component: ParkingTopViewComponent
             }
         ]
     },
@@ -132,8 +138,13 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                component: ParkingTopViewComponent
+                component: CameraViewComponent
+            },
+            {
+                path: ':id',
+                component: CameraViewComponent
             }
+            
         ]
     },
     {
@@ -165,11 +176,11 @@ export const routes: Routes = [
             component: LoginComponent
     },
     {
+        path: 'alert',
+            component: AlertMessageComponent
+    },
+    {
         path: '**',
             component: Eror404Component
     }
-    
-
-    
-    
 ];

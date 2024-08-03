@@ -26,6 +26,7 @@ export class AddParkingComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.addParkingForm.value);
     if (this.addParkingForm.valid) {
       console.log(this.addParkingForm?.value);
       const parkingData: AddParkingVM = this.addParkingForm.value;
@@ -65,4 +66,13 @@ export class AddParkingComponent implements OnInit {
     return time;
   }
 
+  getDayName(index: number): string {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    if (index >= 0 && index < days.length) {
+      return days[index];
+    } else {
+      return 'Invalid day index';
+    }
+  }
+  
 }

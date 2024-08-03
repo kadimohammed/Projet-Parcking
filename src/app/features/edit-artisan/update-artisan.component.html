@@ -1,1 +1,123 @@
-<p>update-artisan works!</p>
+<app-alert-message></app-alert-message>
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Update Artisan</h4>
+
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Add Artisan</h5>
+                    <button [routerLink]="['/Artisans']" routerLinkActive="router-link-active"  type="submit" class="btn btn-primary">Back To List</button>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="updateArtisanForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label class="form-label" for="nom">Nom</label>
+                            <input type="text" class="form-control" id="nom" placeholder="Nom"
+                                   formControlName="Nom"/>
+                            <div *ngIf="updateArtisanForm.get('Nom')?.invalid && (updateArtisanForm.get('Nom')?.dirty || updateArtisanForm.get('Nom')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Nom')?.errors?.['required']">Nom is required.</div>
+                                <div *ngIf="updateArtisanForm.get('Nom')?.errors?.['minlength']">Nom must be at least 3 characters long.</div>
+                                <div *ngIf="updateArtisanForm.get('Nom')?.errors?.['maxlength']">Nom cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="prenom">Prenom</label>
+                            <input type="text" class="form-control" id="prenom" placeholder="Prenom"
+                                   formControlName="Prenom"/>
+                            <div *ngIf="updateArtisanForm.get('Prenom')?.invalid && (updateArtisanForm.get('Prenom')?.dirty || updateArtisanForm.get('Prenom')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Prenom')?.errors?.['required']">Prenom is required.</div>
+                                <div *ngIf="updateArtisanForm.get('Prenom')?.errors?.['minlength']">Prenom must be at least 3 characters long.</div>
+                                <div *ngIf="updateArtisanForm.get('Prenom')?.errors?.['maxlength']">Prenom cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email"
+                                   formControlName="Email"/>
+                            <div *ngIf="updateArtisanForm.get('Email')?.invalid && (updateArtisanForm.get('Email')?.dirty || updateArtisanForm.get('Email')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Email')?.errors?.['required']">Email is required.</div>
+                                <div *ngIf="updateArtisanForm.get('Email')?.errors?.['email']">Invalid Email Address.</div>
+                                <div *ngIf="updateArtisanForm.get('Email')?.errors?.['exist']">Email Already Address.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="tel">Tel</label>
+                            <input type="tel" class="form-control" id="tel" placeholder="Tel"
+                                   formControlName="Tel"/>
+                            <div *ngIf="updateArtisanForm.get('Tel')?.invalid && (updateArtisanForm.get('Tel')?.dirty || updateArtisanForm.get('Tel')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Tel')?.errors?.['required']">Tel is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="profession">Profession</label>
+                            <input type="text" class="form-control" id="profession" placeholder="Profession"
+                                   formControlName="Profession"/>
+                            <div *ngIf="updateArtisanForm.get('Profession')?.invalid && (updateArtisanForm.get('Profession')?.dirty || updateArtisanForm.get('Profession')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Profession')?.errors?.['required']">Profession is required.</div>
+                                <div *ngIf="updateArtisanForm.get('Profession')?.errors?.['minlength']">Profession must be at least 5 characters long.</div>
+                                <div *ngIf="updateArtisanForm.get('Profession')?.errors?.['maxlength']">Profession cannot be more than 100 characters long.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="anneeExperience">Annee Experience</label>
+                            <input type="number" class="form-control" id="anneeExperience" placeholder="Annee Experience"
+                                   formControlName="AnneeExperience"/>
+                            <div *ngIf="updateArtisanForm.get('AnneeExperience')?.invalid && (updateArtisanForm.get('AnneeExperience')?.dirty || updateArtisanForm.get('AnneeExperience')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('AnneeExperience')?.errors?.['required']">Annee Experience is required.</div>
+                                <div *ngIf="updateArtisanForm.get('AnneeExperience')?.errors?.['min']">Annee Experience must be at least 1.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="type">Type</label>
+                            <select class="form-select" id="type" formControlName="Type">
+                                <option value="" disabled>Select Type</option>
+                                <option *ngFor="let t of ArtisanTypes" [value]="t.id">{{ t.libelle }}</option>
+                            </select>
+                            <div *ngIf="updateArtisanForm.get('Type')?.invalid && (updateArtisanForm.get('Type')?.dirty || updateArtisanForm.get('Type')?.touched)" class="form-text">
+                                <div *ngIf="updateArtisanForm.get('Type')?.errors?.['required']">Type is required.</div>
+                                <div *ngIf="updateArtisanForm.get('Type')?.errors?.['typeIncorrect']">Type is Incoreect.</div>
+                            </div>
+                        </div>
+
+
+                        <!-- Display image preview -->
+                        <div *ngIf="updateArtisanForm.get('Photo')?.valid && file" style="display: flex;align-items: center;justify-content: center;">
+                            @if(typefile){
+                                <img src="https://localhost:7009/files/ProfileImages/{{ file }}" alt="Image Preview" width="200" />
+                            }@else{
+                                <img [src]="file" alt="Image Preview" width="200" />
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="photo">Photo</label>
+                            <input type="file" class="form-control" id="photo" (change)="onFileChange($event)" formControlName="Photo"/>
+                        </div>
+                        <div *ngIf="updateArtisanForm.get('Photo')?.invalid && (updateArtisanForm.get('Photo')?.touched || updateArtisanForm.get('Photo')?.dirty)" class="form-text">
+                            <div *ngIf="updateArtisanForm.get('Photo')?.errors?.['invalidFiles']">
+                                <div *ngFor="let error of updateArtisanForm.get('Photo')?.errors?.['invalidFiles']">
+                                    {{ error }}
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="active" formControlName="Active"/>
+                            <label class="form-check-label" for="active">Is Active</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" [disabled]="updateArtisanForm.invalid">Update Artisan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

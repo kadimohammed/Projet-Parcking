@@ -6,6 +6,7 @@ import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ChangeProfileAdminVM } from '../../core/ViewModels/ChangeProfileAdminVM';
 import { ChangePasswordAdminVM } from '../../core/ViewModels/ChangePasswordAdminVM';
 import { AlertMessageComponent } from '../alert-message/alert-message.component';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit {
 
   @ViewChild(AlertMessageComponent) message!: AlertMessageComponent;
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,private loadingService : LoadingService) { }
 
   ngOnInit() {
     this.admin = this.authService.getUser();
@@ -42,12 +43,14 @@ export class ProfileComponent implements OnInit {
   }
   
   onChangeProfile(form: NgForm) {
+    this.loadingService.show();
     this.authService.changeProfile(this.adminProfile).subscribe(
       response => {
+        this.loadingService.hide();
         this.message.changeMessage('Profile updated successfully',true);
       },
       error => {
-        console.log(error);
+        this.loadingService.hide();
         this.message.changeMessage('There was an error updating the profile!',false);
       }
     );
@@ -56,6 +59,7 @@ export class ProfileComponent implements OnInit {
 
 
   onChangePassword(form: NgForm) {
+    this.loadingService.show();
     console.log(form.value);
     if (form.value.NewPassword !== form.value.ConfirmNewPassword) {
       form.controls['ConfirmNewPassword'].setErrors({ passwordMismatch: true });
@@ -63,8 +67,9 @@ export class ProfileComponent implements OnInit {
     else {
       this.authService.changePassword(this.admin.id,this.adminPassword).subscribe(
         response => {
+          this.loadingService.hide();
           this.message.changeMessage('Password updated successfully',true);
-          this.authService.logout();
+          //this.authService.logout();
         },
         error => {
           if(this.authService.errorMessage === "400"){
@@ -73,6 +78,7 @@ export class ProfileComponent implements OnInit {
           else{
             this.message.changeMessage(this.authService.errorMessage,false);
           }
+          this.loadingService.hide();
           
         }
       );

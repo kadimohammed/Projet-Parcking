@@ -1,3 +1,4 @@
+<app-alert-message></app-alert-message>
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Add New Artisan</h4>
@@ -8,6 +9,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Add Artisan</h5>
+                    <button [routerLink]="['/Artisans']" routerLinkActive="router-link-active"  type="submit" class="btn btn-primary">Back To List</button>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="addArtisanForm" (ngSubmit)="onSubmit()">
@@ -40,6 +42,7 @@
                             <div *ngIf="addArtisanForm.get('Email')?.invalid && (addArtisanForm.get('Email')?.dirty || addArtisanForm.get('Email')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('Email')?.errors?.['required']">Email is required.</div>
                                 <div *ngIf="addArtisanForm.get('Email')?.errors?.['email']">Invalid Email Address.</div>
+                                <div *ngIf="addArtisanForm.get('Email')?.errors?.['exist']">Email Already Address.</div>
                             </div>
                         </div>
 
@@ -51,11 +54,6 @@
                                 <div *ngIf="addArtisanForm.get('Tel')?.errors?.['required']">Tel is required.</div>
                             </div>
                         </div>
-
-                        <!-- <div class="mb-3">
-                            <label class="form-label" for="photo">Photo</label>
-                            <input type="file" class="form-control" id="photo" (change)="onFileChange($event)" formControlName="Photo"/>
-                        </div> -->
 
                         <div class="mb-3">
                             <label class="form-label" for="profession">Profession</label>
@@ -78,16 +76,39 @@
                             </div>
                         </div>
 
-                        <!-- <div class="mb-3">
+                        <div class="mb-3">
                             <label class="form-label" for="type">Type</label>
-                            <select class="form-control" id="type" formControlName="Type">
+                            <select class="form-select" id="type" formControlName="Type">
                                 <option value="" disabled>Select Type</option>
-                                <option *ngFor="let t of types" [value]="t.id">{{ t.name }}</option>
+                                <option *ngFor="let t of ArtisanTypes" [value]="t.id">{{ t.libelle }}</option>
                             </select>
                             <div *ngIf="addArtisanForm.get('Type')?.invalid && (addArtisanForm.get('Type')?.dirty || addArtisanForm.get('Type')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('Type')?.errors?.['required']">Type is required.</div>
+                                <div *ngIf="addArtisanForm.get('Type')?.errors?.['typeIncorrect']">Type is Incoreect.</div>
                             </div>
-                        </div> -->
+                        </div>
+
+
+                        <!-- Display image preview -->
+                        <div *ngIf="addArtisanForm.get('Photo')?.valid" style="display: flex;align-items: center;justify-content: center;">
+                            @if(file){
+                                <img [src]="file" alt="Image Preview" width="200" />
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="photo">Photo</label>
+                            <input type="file" class="form-control" id="photo" (change)="onFileChange($event)" formControlName="Photo"/>
+                        </div>
+                        <div *ngIf="addArtisanForm.get('Photo')?.invalid && (addArtisanForm.get('Photo')?.touched || addArtisanForm.get('Photo')?.dirty)" class="form-text">
+                            <div *ngIf="addArtisanForm.get('Photo')?.errors?.['invalidFiles']">
+                                <div *ngFor="let error of addArtisanForm.get('Photo')?.errors?.['invalidFiles']">
+                                    {{ error }}
+                                </div>
+                            </div>
+                        </div><br>
+                        
+                        
+                        
 
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="active" formControlName="Active"/>

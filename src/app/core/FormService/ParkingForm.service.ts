@@ -20,8 +20,8 @@ export class ParkingFormService {
         timeEndWork: ['', Validators.required],
         creationDate: ['', Validators.required],
         isWorking: [false],
-        // jours: this.fb.array(this.createDaysArray()),
-        // photoParkings: [null, Validators.required] 
+        jours: this.fb.array(this.createDaysArray()),
+        photoParkings: [null, Validators.required] 
     });
   }
 

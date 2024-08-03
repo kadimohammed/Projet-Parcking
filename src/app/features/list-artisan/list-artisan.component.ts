@@ -7,6 +7,7 @@ import { Artisan } from '../../core/models/Artisan.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { NgModel } from '@angular/forms';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-list-artisan',
@@ -32,22 +33,27 @@ export class ListArtisanComponent implements OnInit {
   ArtisanActiveInput? : boolean = true;
   ArtisanNonActiveInput? : boolean = true;
 
-  constructor(private artisanService: ArtisanService) { }
+  constructor(
+    private artisanService: ArtisanService,
+    private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.loadArtisans();
   }
 
   loadArtisans(): void {
+    this.loadingService.show();
     this.artisanService.getArtisans().subscribe({
       next: (data) => {
         this.Artisans = data;
         this.FullArtisans = data;
         this.updatePaginatedArtisans();
         this.changeMessage('',true);
+        this.loadingService.hide();
       },
       error: (error: HttpErrorResponse) => {
         this.changeMessage(this.artisanService.errorMessage,false);
+        this.loadingService.hide();
     }});
   }
 

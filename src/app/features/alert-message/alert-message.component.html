@@ -1,4 +1,4 @@
-<div style="display: flex;align-items: center;justify-content: center;">
+<!-- <div style="display: flex;align-items: center;justify-content: center;">
     @if(message.message != ''){
         @if(!message.state){
             <div class="alert alert-danger" role="alert">{{message.message}}</div>
@@ -7,5 +7,41 @@
             <div class="alert alert-success" role="alert">{{message.message}}</div>
         }
     }    
-</div>
+</div> -->
 
+
+@if(message.message != ''){
+    <div class="alert-containner">
+        @if(message.state){
+            <div class="bs-toast toast fade show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class="bx bx-bell me-2"></i>
+                    <div class="me-auto fw-semibold">success</div>
+                    <button (click)="hideAlert()" type="button" class="btn-close"></button>
+                </div>
+                <div class="toast-body">
+                    <span class="message-alert">{{message.message}}</span>
+                </div>
+                <div class="button-alert-div">
+                    <button (click)="hideAlert()" type="button" class="btn btn-outline-success">ok</button>
+                    <button (click)="hideAlert()" type="button" class="btn btn-outline-success">CANCEL</button>
+                </div>
+            </div>
+        }@else {
+            <div class="bs-toast toast fade show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Eror</div>
+                <button type="button" class="btn-close" (click)="hideAlert()"></button>
+                </div>
+                <div class="toast-body">
+                    <span class="message-alert">{{message.message}}</span>
+                </div>
+                <div class="button-alert-div">
+                    <button (click)="hideAlert()" type="button" class="btn btn-outline-danger">OK</button>
+                    <button (click)="hideAlert()" type="button" class="btn btn-outline-danger">CANCEL</button>
+                </div>
+            </div>
+        }
+    </div>
+}

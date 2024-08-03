@@ -15,8 +15,14 @@ export class AlertMessageComponent {
   changeMessage(Msg:string,etat:boolean){
     this.message.message = Msg;
     this.message.state = etat;
-    setTimeout(() => {
-      this.message.message = '';
-    }, 3000);
+    // setTimeout(() => {
+    //   this.message.message = '';
+    // }, 10000);
+  }
+
+  isAlertVisible: boolean = false;
+
+  hideAlert() {
+    this.changeMessage('',false);
   }
 }

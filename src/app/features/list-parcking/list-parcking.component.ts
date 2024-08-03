@@ -27,7 +27,10 @@ export class ListParckingComponent implements OnInit {
   parkingsActiveInput? : boolean = true;
   parkingsNonActiveInput? : boolean = true;
 
-  constructor(private parkingService: ParkingService,private loadingService: LoadingService) { }
+  constructor(
+    private parkingService: ParkingService,
+    private loadingService: LoadingService
+  ) { }
 
   ngOnInit(): void {
     this.loadingService.show();

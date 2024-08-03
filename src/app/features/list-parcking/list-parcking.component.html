@@ -38,7 +38,6 @@
             <th>Début</th>
             <th>Fin</th>
             <th>State</th>
-            <th>Location</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -58,13 +57,13 @@
             }@else {
               <td><span class="badge bg-label-danger me-1">No Active</span></td>
             }
-            <td style="display: flex;justify-content: center;align-items: center;">
-              <a [routerLink]="['/parkingsmap/',parking.id]"><i class='bx bx-current-location' style='color:#001571;'></i></a>
-            </td>
-            <td>
-                <a  [routerLink]="['/parkings/edit/',parking.id]"><i class="bx bx-edit-alt me-2"></i></a>
-                <a style="cursor: pointer;" (click)="deleteParking(parking.id)"><i class="bx bx-trash me-2"></i></a>
-                <a [routerLink]="['/parkings/details/',parking.id]"><i class='bx bxs-detail'></i></a>
+            <td style="display: flex;justify-content: space-between;align-items: center;gap: 15px;">
+              <a [routerLink]="['/parkingsmap/',parking.id]"><i class='bx bx-current-location'></i></a>
+              <a [routerLink]="['/cameraview/',parking.id]"><i class='bx bxs-camera-home' ></i></a>
+              <a [routerLink]="['/topview/',parking.id]"><i class='bx bxs-map-alt'></i></a>
+              <a  [routerLink]="['/parkings/edit/',parking.id]"><i class="bx bx-edit-alt"></i></a>
+              <a [routerLink]="['/parkings/details/',parking.id]"><i class='bx bxs-detail'></i></a>
+              <a style="cursor: pointer;" (click)="deleteParking(parking.id)"><i class="bx bx-trash"></i></a>
             </td>
           </tr>
         </tbody>
