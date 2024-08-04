@@ -2,32 +2,47 @@
 
 <div class="container">
   <div class="toolbox">
-    <label>Parking Map:</label>
-    <input type="file" (change)="onImageUpload($event)" accept="image/*">
-    <label>Texture:</label>
-    <input type="file" (change)="onTextureUpload($event)" accept="image/*">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group" role="group" aria-label="File Uploads">
+        <label class="btn btn-outline-secondary" aria-label="Upload Parking Map">
+          Upload Parking Map
+          <i class="tf-icons bx bx-upload"></i>
+          <input type="file" (change)="onImageUpload($event)" accept="image/*" style="display: none;">
+        </label>
+        <label class="btn btn-outline-secondary" aria-label="Upload Texture">
+          Upload Texture
+          <i class="tf-icons bx bx-upload"></i>
+          <input type="file" (change)="onTextureUpload($event)" accept="image/*" style="display: none;">
+        </label>
+      </div>
+      <div class="btn-group" role="group" aria-label="Tools">
+        <button class="btn btn-outline-secondary" (click)="setTool('rectangle')" aria-label="Rectangle Tool">
+          <i class="tf-icons bx bx-rectangle"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="setTool('move')" aria-label="Move Tool">
+          <i class="tf-icons bx bx-move"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="setTool('polygon')" aria-label="Polygon Tool">
+          <i class="tf-icons bx bx-shape-polygon"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="generateXml()" aria-label="Polygon Tool">
+          Download XML      
+          <i class="tf-icons bx bx-code-alt"></i>
+        </button>
 
-    <div class="tool">
-      <div class="tool-icon rectangle-icon"></div>
-      <button (click)="setTool('rectangle')">Rectangle Tool</button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Canvas Actions">        
+        <button class="btn btn-outline-secondary" (click)="onResetZoom()" aria-label="Reset Zoom">
+          <i class="tf-icons bx bx-refresh"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="onDownload()" aria-label="Download Image">
+          <i class="tf-icons bx bx-download"></i>
+        </button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Color Picker">
+        <input type="color" [(ngModel)]="color" (change)="redrawCanvas()" class="btn btn-outline-secondary" aria-label="Color Picker">
+      </div>
     </div>
-    <div class="tool">
-      <div class="tool-icon move-icon"></div>
-      <button (click)="setTool('move')">Move Tool</button>
-    </div>
-    <div class="tool">
-      <div class="tool-icon rotate-icon"></div>
-      <button (click)="onRotate()">Rotate Rectangle</button>
-    </div>
-    <div class="tool">
-      <div class="tool-icon polygon-icon"></div>
-      <button (click)="setTool('polygon')">Polygon Tool</button>
-    </div>
-    <input type="color" [(ngModel)]="color" (change)="redrawCanvas()">
-    <button (click)="onZoomIn()">Zoom In</button>
-    <button (click)="onZoomOut()">Zoom Out</button>
-    <button (click)="onResetZoom()">Reset Zoom</button>
-    <button (click)="onDownload()">Download Image</button>
   </div>
   <div class="canvas-container">
     <div class="whiteboard">
