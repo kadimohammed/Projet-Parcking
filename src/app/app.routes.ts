@@ -6,7 +6,7 @@ import { LoginComponent } from './features/login/login.component';
 import { Eror404Component } from './features/eror404/eror404.component';
 import { ListParckingComponent } from './features/list-parcking/list-parcking.component';
 import { AddParkingComponent } from './features/add-parking/add-parking.component';
-import { ParkingDetailsComponent } from './features/parking-details/parking-details.component';
+import { ParkingDetailsComponent } from './features/details-parking/details-parking.component';
 import { EditParkingComponent } from './features/edit-parking/edit-parking.component';
 import { authGuard } from './core/guards/auth.guard';
 import { ListArtisanComponent } from './features/list-artisan/list-artisan.component';
@@ -20,6 +20,7 @@ import { UpdateTypeArtisanComponent } from './features/edit-type-artisan/edit-ty
 import { ParkingTopViewComponent } from './Khaireddine/parking-top-view/parking-top-view.component';
 import { CameraViewComponent } from './features/camera-view/camera-view.component';
 import { AlertMessageComponent } from './features/alert-message/alert-message.component';
+import { DetailsArtisanComponent } from './features/details-Artisan/details-Artisan.component';
 
 export const routes: Routes = [
     {
@@ -92,7 +93,7 @@ export const routes: Routes = [
             },
             {
                 path: 'details/:id',
-                component: EditArtisanComponent
+                component: DetailsArtisanComponent
             }
         ]
     },
@@ -115,7 +116,7 @@ export const routes: Routes = [
             {
                 path: 'edit/:id',
                 component: UpdateTypeArtisanComponent
-            }
+            },
         ]
     },
     {

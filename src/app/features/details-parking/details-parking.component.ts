@@ -9,8 +9,8 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
   selector: 'app-parking-details',
   standalone: true,
   imports: [RouterLink,CommonModule,TimeFormatPipe],
-  templateUrl: './parking-details.component.html',
-  styleUrl: './parking-details.component.css'
+  templateUrl: './details-parking.component.html',
+  styleUrl: './details-parking.component.css'
 })
 export class ParkingDetailsComponent  implements OnInit{
 

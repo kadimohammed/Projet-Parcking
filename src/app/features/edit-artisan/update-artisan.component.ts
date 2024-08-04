@@ -25,6 +25,7 @@ export class EditArtisanComponent {
   formData : FormData = new FormData();
   file : any ;
   typefile : boolean = true ;
+  artisanId : number = 0;
 
   @ViewChild(AlertMessageComponent) message!: AlertMessageComponent;
 
@@ -38,8 +39,8 @@ export class EditArtisanComponent {
   ) {}
 
   ngOnInit(): void {
-    const artisanId = +this.route.snapshot.paramMap.get('id')!;
-    this.getArtisan(artisanId);
+    this.artisanId = +this.route.snapshot.paramMap.get('id')!;
+    this.getArtisan(this.artisanId);
     this.loadArtisanTypes();
     this.updateArtisanForm = this.artisanForm.createUpdateArtisanForm();
   }
@@ -116,10 +117,10 @@ export class EditArtisanComponent {
           }
         });
   
-        this.artisanService.addArtisan(this.formData).subscribe(
+        this.artisanService.UpdateArtisan(this.artisanId,this.formData).subscribe(
           response => {
             this.loadingService.hide();
-            this.message.changeMessage('Add Artisan successfully',true);
+            this.message.changeMessage('Artisan Updated successfully',true);
           },
           error => {
             this.loadingService.hide();

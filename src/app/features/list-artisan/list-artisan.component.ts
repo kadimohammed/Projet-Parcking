@@ -84,6 +84,8 @@ export class ListArtisanComponent implements OnInit {
       this.artisanService.deleteArtisan(id).subscribe(
         () => {
           this.Artisans = this.Artisans.filter(p => p.id !== id);
+          this.FullArtisans  = this.Artisans;
+          this.updatePaginatedArtisans();
           this.changeMessage('Artisan supprimé avec succès.',true);
         },
         (error: any) => {

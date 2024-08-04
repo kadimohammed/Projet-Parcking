@@ -1,0 +1,128 @@
+<section class="h-100 gradient-custom-2" >
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-9 col-xl-8" style="width: 100%;">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-image: url('{{ Artisan.coverPhoto }}'); height:200px;background-size: cover;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="https://localhost:7009/files/ProfileImages/{{ Artisan.photo }}"
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
+                Update Artisan
+              </button>
+            </div>
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5 class="lead fw-normal mb-1" style="color: aliceblue;"><b>{{ Artisan.prenom }} {{ Artisan.nom }}</b></h5>
+              <p>{{ Artisan.profession }}</p>
+            </div>
+          </div>
+          <div class="p-4 text-black bg-body-tertiary">
+            <div class="d-flex justify-content-end text-center py-1 text-body">
+              <div>
+                <p class="mb-1 h5">{{Artisan.rating}}</p>
+                <p class="small text-muted mb-0">Rating</p>
+              </div>
+              <div class="px-3">
+                <p class="mb-1 h5">{{Artisan.anneeExperience}} Year</p>
+                <p class="small text-muted mb-0">Experience</p>
+              </div>
+              <div>
+                <p class="mb-1 h5">{{Artisan.artisanClientServices?.length}}</p>
+                <p class="small text-muted mb-0">Services</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5  text-body">
+              <h5 class="lead fw-normal mb-1"><b>About :</b></h5>
+              <div class="p-4 bg-body-tertiary">
+                <ul>
+                  <li>
+                    <h6 class="card-title"><b>Type :</b> {{Artisan.type.libelle}}</h6>
+                  </li>
+                  <li>
+                    <h6 class="card-title"><b>Adress :</b> {{Artisan.adresse}}</h6>
+                  </li>
+                  <li>
+                    <h6 class="card-title"><b>Email :</b> {{Artisan.email}}</h6>
+                  </li>
+                  <li>
+                    <h6 class="card-title"><b>Telephone :</b> {{Artisan.tel}}</h6>
+                  </li>
+                  <li>
+                    <h6 class="card-title"><b>State : </b> 
+                      @if(Artisan.active){
+                      <span class="badge bg-success"> Active</span>
+                      }@else{
+                        <span class="badge bg-danger"> Non Active</span>
+                      } 
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="card-title"><b>Description :</b></h6>
+                    <p class="font-italic mb-1">{{Artisan.description}}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <h5 class="lead fw-normal mb-1"><b>Services State :</b></h5>
+            <div class="card-body">
+              <div class="demo-vertical-spacing">
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.EnCours)" aria-valuenow="getPercentage(ServiceEtat.EnCours)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Terminee {{ getPercentage(ServiceEtat.EnCours).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-secondary" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Terminee)" aria-valuenow="getPercentage(ServiceEtat.Terminee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">EnAttente {{ getPercentage(ServiceEtat.Terminee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-info" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.EnAttente)" aria-valuenow="getPercentage(ServiceEtat.EnAttente)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">EnCours {{ getPercentage(ServiceEtat.EnAttente).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-warning" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Rejetee)" aria-valuenow="getPercentage(ServiceEtat.Rejetee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Rejetee {{ getPercentage(ServiceEtat.Rejetee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Annulee)" aria-valuenow="getPercentage(ServiceEtat.Annulee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Annulee {{ getPercentage(ServiceEtat.Annulee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
+            </div><br>
+            <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+              <h5 class="lead fw-normal mb-1"><b>Recent photos :</b></h5>
+              <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+            </div>
+            <div class="row g-2">
+              <div class="col mb-2">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp" alt="image 1"
+                  class="w-100 rounded-3">
+              </div>
+              <div class="col mb-2">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp" alt="image 1"
+                  class="w-100 rounded-3">
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp" alt="image 1"
+                  class="w-100 rounded-3">
+              </div>
+              <div class="col">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp" alt="image 1"
+                  class="w-100 rounded-3">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

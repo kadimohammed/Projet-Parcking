@@ -44,10 +44,10 @@ export class ArtisanService {
             this.errorMessage = `Connexion impossible au serveur.`;
             break;
           case 404:
-            this.errorMessage = `Ressource non trouvée lors du chargement des Artisans.`;
+            this.errorMessage = `Ressource non trouvée lors du chargement d'Artisans.`;
             break;
           case 500:
-            this.errorMessage = `Erreur 500: Erreur interne du serveur lors du chargement des Artisans.`;
+            this.errorMessage = `Erreur 500: Erreur interne du serveur lors du chargement d'Artisans.`;
             break;
           default:
             this.errorMessage = `Erreur ${error.status}: Une erreur est survenue lors du ${error.message}.`;
@@ -83,7 +83,6 @@ export class ArtisanService {
   addArtisan(artisan: FormData): Observable<any> {
     return this.http.post<any>(this.apiUrl, artisan).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log("erooor ajpout "+JSON.stringify(error));
         switch (error.status) {
           case 0:
             this.errorMessage = `Connexion impossible au serveur.`;
@@ -101,6 +100,36 @@ export class ArtisanService {
             break;
           case 500:
             this.errorMessage = `Erreur interne du serveur lors L'insersion d'Artisan.`;
+            break;
+          default:
+            this.errorMessage = `Une erreur est survenue.`;
+        }
+        return throwError(() => new Error(this.errorMessage));
+      })
+    );
+  }
+
+
+  UpdateArtisan(id: number,artisan: FormData): Observable<any> {
+    return this.http.put<any>(this.apiUrl+"/"+id, artisan).pipe(
+      catchError((error: HttpErrorResponse) => {
+        switch (error.status) {
+          case 0:
+            this.errorMessage = `Connexion impossible au serveur.`;
+            break;
+          case 400:
+            if(error.error.errors){
+              const validationErrors = error.error.errors;
+              if (validationErrors.Email) {
+                this.errorMessage = '1';
+              } 
+              else if((validationErrors.Type)) {
+                this.errorMessage = '2';
+              }
+            }
+            break;
+          case 500:
+            this.errorMessage = `Erreur interne du serveur lors update d'Artisan.`;
             break;
           default:
             this.errorMessage = `Une erreur est survenue.`;
