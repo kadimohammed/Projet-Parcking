@@ -1,3 +1,42 @@
-<p>
-  parking-top-view works!
-</p>
+<!-- image-editor.component.html -->
+
+<div class="container">
+  <div class="toolbox">
+    <label>Parking Map:</label>
+    <input type="file" (change)="onImageUpload($event)" accept="image/*">
+    <label>Texture:</label>
+    <input type="file" (change)="onTextureUpload($event)" accept="image/*">
+
+    <div class="tool">
+      <div class="tool-icon rectangle-icon"></div>
+      <button (click)="setTool('rectangle')">Rectangle Tool</button>
+    </div>
+    <div class="tool">
+      <div class="tool-icon move-icon"></div>
+      <button (click)="setTool('move')">Move Tool</button>
+    </div>
+    <div class="tool">
+      <div class="tool-icon rotate-icon"></div>
+      <button (click)="onRotate()">Rotate Rectangle</button>
+    </div>
+    <div class="tool">
+      <div class="tool-icon polygon-icon"></div>
+      <button (click)="setTool('polygon')">Polygon Tool</button>
+    </div>
+    <input type="color" [(ngModel)]="color" (change)="redrawCanvas()">
+    <button (click)="onZoomIn()">Zoom In</button>
+    <button (click)="onZoomOut()">Zoom Out</button>
+    <button (click)="onResetZoom()">Reset Zoom</button>
+    <button (click)="onDownload()">Download Image</button>
+  </div>
+  <div class="canvas-container">
+    <div class="whiteboard">
+      <canvas #canvas 
+              (mousedown)="onMouseDown($event)" 
+              (mousemove)="onMouseMove($event)" 
+              (mouseup)="onMouseUp($event)"
+              (click)="onClick($event)">
+      </canvas>
+    </div>
+  </div>
+</div>
