@@ -4,7 +4,7 @@ import { Point } from "./point.model";
 
 export interface Lot {
     id: number;
-    disponibilty: boolean; 
+    disponibility: boolean; 
     numOfLot: number;
     width: number;
     height: number;

@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ParkingService } from '../../core/services/parking.service';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
+import { ServiceEtat } from '../../core/models/service-etat.enum';
 
 @Component({
   selector: 'app-parking-details',
@@ -22,7 +23,6 @@ export class ParkingDetailsComponent  implements OnInit{
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
-    console.log('id  '+id);
     this.getParking(id);
   }
 
@@ -32,11 +32,32 @@ export class ParkingDetailsComponent  implements OnInit{
     this.parkingService.getParking(id).subscribe(
       (data: ParkingDetails) => {
         this.parking = data;
+        console.log(this.parking);
       },
       (error: any) => {
         this.error = 'Erreur lors de la récupération des détails du parking';
       }
     );
+  }
+
+  
+  totalCount: number = 0;
+  stateCounts: { [key: string]: number } = {};
+  ServiceEtat = ServiceEtat;
+
+  calculateServiceStates(): void {
+    if (this.parking.artisanClientServices) {
+      this.totalCount = this.parking.artisanClientServices.length;
+      this.stateCounts = this.parking.artisanClientServices.reduce((counts, service) => {
+        const state = service.etat as ServiceEtat;
+        counts[state] = (counts[state] || 0) + 1;
+        return counts;
+      }, {} as { [key in ServiceEtat]?: number });
+    }
+  }
+
+  getPercentage(state: ServiceEtat): number {
+    return this.stateCounts[state] ? (this.stateCounts[state] / this.totalCount) * 100 : 0;
   }
 
   

@@ -1,9 +1,194 @@
+
+<section class="h-100 gradient-custom-2" >
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-9 col-xl-8" style="width: 100%;">
+        <div class="card">
+          <div class="card-body p-4 text-black">
+
+
+            <section class="section about-section gray-bg" id="about">
+              <div class="container">
+                  <div class="row align-items-center flex-row-reverse">
+                      <div class="col-lg-6">
+                          <div class="about-text go-to">
+                              <h6 class="theme-color lead"><b>{{parking.nomParcking}}</b></h6>
+                              <p style="color: rgb(153, 98, 255);"> {{ parking.adresse }}</p>
+                              <div class="row about-list">
+                                  <div class="col-md-6">
+                                      <div class="media">
+                                          <label>Creation Date</label>
+                                          <p><b>{{ parking.creationDate | date }}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>Surface</label>
+                                          <p><b>{{ parking.surface }}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>Time Start Work</label>
+                                          <p><b>{{ parking.timeStartWork | timeFormat}}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>State : </label>
+                                          <p>
+                                            @if(parking.isWorking){
+                                              <span class="badge bg-success"> Active</span>
+                                            }@else{
+                                              <span class="badge bg-danger"> Non Active</span>
+                                            }
+                                          </p>   
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="media">
+                                          <label>Lots</label>
+                                          <p><b>{{ parking.lots?.length }}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>Services</label>
+                                          <p><b>{{ parking.artisanClientServices?.length }}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>Time End Work</label>
+                                          <p><b>{{ parking.timeEndWork | timeFormat}}</b></p>
+                                      </div>
+                                      <div class="media">
+                                          <label>Freelance</label>
+                                          <p><b>122</b></p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="about-avatar">
+                            <img class="w-100 rounded-3" *ngIf="parking && parking.photoParkings && parking.photoParkings.length > 0 && parking.photoParkings[0].photo && parking.photoParkings[0].photo.path"
+                            [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[0].photo.path"
+                            alt="Parking Image">
+                          </div>
+                      </div>
+                  </div><br>
+                  <div class="counter">
+                      <div class="row">
+                          <div class="col-6 col-lg-3">
+                              <div class="count-data text-center">
+                                  <h6 class="count h2" data-to="500" data-speed="500">500</h6>
+                                  <p class="m-0px font-w-600">Happy Clients</p>
+                              </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                              <div class="count-data text-center">
+                                  <h6 class="count h2" data-to="150" data-speed="150">150</h6>
+                                  <p class="m-0px font-w-600">Project Completed</p>
+                              </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                              <div class="count-data text-center">
+                                  <h6 class="count h2" data-to="850" data-speed="850">850</h6>
+                                  <p class="m-0px font-w-600">Photo Capture</p>
+                              </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                              <div class="count-data text-center">
+                                  <h6 class="count h2" data-to="190" data-speed="190">190</h6>
+                                  <p class="m-0px font-w-600">Telephonic Talk</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </section>
+            
+            
+            
+            
+
+            <h5 class="lead fw-normal mb-1"><b>Services State :</b></h5>
+            <div class="card-body">
+              <div class="demo-vertical-spacing">
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.EnCours)" aria-valuenow="getPercentage(ServiceEtat.EnCours)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Terminee {{ getPercentage(ServiceEtat.EnCours).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-secondary" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Terminee)" aria-valuenow="getPercentage(ServiceEtat.Terminee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">EnAttente {{ getPercentage(ServiceEtat.Terminee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-info" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.EnAttente)" aria-valuenow="getPercentage(ServiceEtat.EnAttente)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">EnCours {{ getPercentage(ServiceEtat.EnAttente).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-warning" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Rejetee)" aria-valuenow="getPercentage(ServiceEtat.Rejetee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Rejetee {{ getPercentage(ServiceEtat.Rejetee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="getPercentage(ServiceEtat.Annulee)" aria-valuenow="getPercentage(ServiceEtat.Annulee)" aria-valuemin="0" aria-valuemax="100">
+                    <span class="progress-bar-text">Annulee {{ getPercentage(ServiceEtat.Annulee).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
+            </div><br>
+            <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+              <h5 class="lead fw-normal mb-1"><b>Recent photos :</b></h5>
+              <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+            </div>
+            <div class="row g-2">
+              <div class="col mb-2">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 0"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[0].photo.path"
+                  alt="Parking Image">
+              </div>
+              <div class="col mb-2">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 1"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[1].photo.path"
+                  alt="Parking Image">
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 2"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[2].photo.path"
+                  alt="Parking Image">
+              </div>
+              <div class="col">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 3"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[3].photo.path"
+                  alt="Parking Image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Content -->
-<div class="container-xxl flex-grow-1 container-p-y" style="width: 80%;">
+<!-- <div class="container-xxl flex-grow-1 container-p-y" style="width: 80%;">
     <h4 class="fw-bold py-3 mb-4">Parking Details</h4>
     <button [routerLink]="['/parkings']" type="button" class="btn btn-primary" style="margin-bottom: 10px;">Back To List</button><br>
     <div class="row">
-      <!-- Inline text elements -->
+      
+
+      
       <div class="col">
         <div class="card mb-4">
           <div class="card-body">
@@ -79,7 +264,7 @@
         </div>
       </div>
     </div>
-</div>
+</div> -->
 
 
   <!-- / Content -->
