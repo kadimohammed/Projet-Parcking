@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { XmlService } from './Xml.service';
+import { CanvasService } from './Canvas.service';
 
-describe('Service: Xml', () => {
+describe('Service: Canvas', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [XmlService]
+      providers: [CanvasService]
     });
   });
 
-  it('should ...', inject([XmlService], (service: XmlService) => {
+  it('should ...', inject([CanvasService], (service: CanvasService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -26,24 +26,24 @@
           <i class="tf-icons bx bx-shape-polygon"></i>
         </button>
       </div>
-      <div class="btn-group" role="group" aria-label="Canvas Actions">        
+      <div class="btn-group" role="group" aria-label="Canvas Actions">
         <button class="btn btn-outline-secondary" (click)="onResetZoom()" aria-label="Reset Zoom">
           <i class="tf-icons bx bx-refresh"></i>
         </button>
-        <button class="btn btn-outline-secondary" (click)="onDownload()" aria-label="Download Image">
+        <button class="btn btn-outline-secondary" (click)="generateXml()" aria-label="Download Image">
           <i class="tf-icons bx bx-download"></i>
         </button>
       </div>
       <div class="btn-group" role="group" aria-label="Color Picker">
-        <input type="color" [(ngModel)]="color" (change)="redrawCanvas()" class="btn btn-outline-secondary" aria-label="Color Picker">
+        <input type="color" [(ngModel)]="color" class="btn btn-outline-secondary" aria-label="Color Picker">
       </div>
     </div>
   </div>
   <div class="canvas-container">
     <div class="whiteboard">
-      <canvas #canvas 
-              (mousedown)="onMouseDown($event)" 
-              (mousemove)="onMouseMove($event)" 
+      <canvas #canvas
+              (mousedown)="onMouseDown($event)"
+              (mousemove)="onMouseMove($event)"
               (mouseup)="onMouseUp($event)"
               (click)="onClick($event)">
       </canvas>
