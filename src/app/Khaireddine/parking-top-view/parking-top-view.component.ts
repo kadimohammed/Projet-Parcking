@@ -32,10 +32,6 @@ export class ParkingTopViewComponent implements AfterViewInit {
   private textureImage: HTMLImageElement | null = null;
   private currentPoints: { x: number; y: number }[] = [];
 
-  private imageScale = 1;
-  private imageOffsetX = 0;
-  private imageOffsetY = 0;
-
   ngAfterViewInit() {
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
@@ -191,6 +187,7 @@ export class ParkingTopViewComponent implements AfterViewInit {
     this.updateCanvasPosition();
   }
 
+  // Change this method to public
   redrawCanvas() {
     this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
 
@@ -210,10 +207,6 @@ export class ParkingTopViewComponent implements AfterViewInit {
         offsetX = (this.canvasRef.nativeElement.width - drawWidth) / 2;
         offsetY = 0;
       }
-
-      this.imageScale = drawWidth / this.image.width;
-      this.imageOffsetX = offsetX;
-      this.imageOffsetY = offsetY;
 
       this.ctx.drawImage(this.image, offsetX, offsetY, drawWidth, drawHeight);
     }
@@ -333,29 +326,22 @@ export class ParkingTopViewComponent implements AfterViewInit {
     const builder = new xml2js.Builder();
     const xmlObject = {
       parking: {
-        space: this.rectangles.map((rect, index) => {
-          const centerX = (rect.x + rect.width / 2 - this.imageOffsetX) / this.imageScale;
-          const centerY = (rect.y + rect.height / 2 - this.imageOffsetY) / this.imageScale;
-          const width = rect.width / this.imageScale;
-          const height = rect.height / this.imageScale;
-
-          return {
-            $: { id: index + 1, occupied: '0' },
-            rotatedRect: {
-              center: { $: { x: centerX, y: centerY } },
-              size: { $: { w: width, h: height } },
-              angle: { $: { d: (rect.angle * 180) / Math.PI } } // Convert radians to degrees
-            },
-            contour: {
-              point: [
-                { $: { x: rect.x / this.imageScale, y: rect.y / this.imageScale } },
-                { $: { x: (rect.x + rect.width) / this.imageScale, y: rect.y / this.imageScale } },
-                { $: { x: (rect.x + rect.width) / this.imageScale, y: (rect.y + rect.height) / this.imageScale } },
-                { $: { x: rect.x / this.imageScale, y: (rect.y + rect.height) / this.imageScale } }
-              ]
-            }
-          };
-        })
+        space: this.rectangles.map((rect, index) => ({
+          $: { id: index + 1, occupied: '0' },
+          rotatedRect: {
+            center: { $: { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 } },
+            size: { $: { w: rect.width, h: rect.height } },
+            angle: { $: { d: (rect.angle * 180) / Math.PI } } // Convert radians to degrees
+          },
+          contour: {
+            point: [
+              { $: { x: rect.x, y: rect.y } },
+              { $: { x: rect.x + rect.width, y: rect.y } },
+              { $: { x: rect.x + rect.width, y: rect.y + rect.height } },
+              { $: { x: rect.x, y: rect.y + rect.height } }
+            ]
+          }
+        }))
       }
     };
     const xml = builder.buildObject(xmlObject);
