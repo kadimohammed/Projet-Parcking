@@ -1,27 +1,35 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { ShapeService } from './shape.service';
 import { CanvasService } from './Canvas.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class XmlService {
+  private apiUrl = 'https://localhost:7009/api/Parkings';
+
   constructor(
     private shapeService: ShapeService,
-    private canvasService: CanvasService
+    private canvasService: CanvasService,
+    private http: HttpClient
   ) {}
-
-  generateAndDownloadXml() {
+  generateDownloadAndUploadXml(parkingId: string): Observable<any> {
     const builder = new xml2js.Builder();
-    const xmlObject = this.createXmlObject();
+    const xmlObject = this.createXmlObject(parkingId);
     const xml = builder.buildObject(xmlObject);
-    this.downloadXmlFile(xml);
+
+    this.downloadXmlFile(xml, parkingId);
+
+    return this.uploadXmlFile(xml, parkingId);
   }
 
-  private createXmlObject() {
+  private createXmlObject(parkingId: string) {
     return {
       parking: {
+        $: { id: parkingId },
         space: this.shapeService.getRectangles().map((rect, index) => {
           const { centerX, centerY, width, height } = this.canvasService.getScaledRectDimensions(rect);
           return {
@@ -62,13 +70,22 @@ export class XmlService {
     });
   }
 
-  private downloadXmlFile(xml: string) {
+  private downloadXmlFile(xml: string, parkingId: string) {
     const blob = new Blob([xml], { type: 'application/xml' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'parking_data.xml';
+    link.download = `parking_data_${parkingId}.xml`;
     link.click();
     window.URL.revokeObjectURL(url);
   }
+
+  private uploadXmlFile(xml: string, parkingId: string): Observable<any> {
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const formData = new FormData();
+    formData.append('file', blob, `parking_data_${parkingId}.xml`);
+
+    return this.http.post(`${this.apiUrl}/${parkingId}/xml-topview`, formData);
+  }
+
 }

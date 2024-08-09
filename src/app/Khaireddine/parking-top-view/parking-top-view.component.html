@@ -3,7 +3,14 @@
 <div class="container">
   <div class="toolbox">
     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group" role="group" aria-label="Parking Selection">
+        <select id="parkingSelect" class="form-select" (change)="onParkingSelect($event)">
+          <option value="">Select a parking</option>
+          <!-- Options will be populated dynamically -->
+        </select>
+      </div>
       <div class="btn-group" role="group" aria-label="File Uploads">
+
         <label class="btn btn-outline-secondary" aria-label="Upload Parking Map">
           Upload Parking Map
           <i class="tf-icons bx bx-upload"></i>
