@@ -46,6 +46,10 @@ export class AuthService {
       }
     ));
   }
+
+  getAdmins(): Observable<Admin[]> {
+    return this.http.get<Admin[]>(this.baseUrl);
+  }
   
   
   logout(): void {
