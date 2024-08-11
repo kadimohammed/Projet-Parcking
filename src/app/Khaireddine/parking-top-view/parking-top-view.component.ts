@@ -119,7 +119,11 @@ export class ParkingTopViewComponent implements OnInit, AfterViewInit {
 
   generateXml() {
     if (this.selectedParkingId) {
-      this.xmlService.generateDownloadAndUploadXml(this.selectedParkingId);
+      this.xmlService.generateDownloadAndUploadXml(this.selectedParkingId).subscribe({
+        next: response => console.log('Upload successful:', response),
+        error: error => console.error('Error during upload:', error),
+        complete: () => console.log('Upload operation completed')
+      });
     } else {
       alert('No parking selected');
     }
