@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { ShapeService } from './shape.service';
 import { CanvasService } from './Canvas.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,30 @@ export class XmlService {
     private http: HttpClient
   ) {}
   generateDownloadAndUploadXml(parkingId: string): Observable<any> {
+    console.log('Starting XML generation and upload');
     const builder = new xml2js.Builder();
     const xmlObject = this.createXmlObject(parkingId);
+    console.log('XML Object Created:', xmlObject);
     const xml = builder.buildObject(xmlObject);
+    console.log('XML String Generated:', xml);
 
     this.downloadXmlFile(xml, parkingId);
+    console.log('XML File Downloaded');
 
-    return this.uploadXmlFile(xml, parkingId);
+    const uploadObservable = this.uploadXmlFile(xml, parkingId).pipe(
+      tap(response => console.log('Upload successful:', response)),
+      catchError(error => {
+        console.error('Error uploading XML:', error);
+        return throwError(error);
+      })
+    );
+
+    console.log('Attempting to upload XML file');
+    return uploadObservable;
   }
+
+
+
 
   private createXmlObject(parkingId: string) {
     return {
@@ -81,11 +97,32 @@ export class XmlService {
   }
 
   private uploadXmlFile(xml: string, parkingId: string): Observable<any> {
+    console.log('Preparing to upload XML file');
     const blob = new Blob([xml], { type: 'application/xml' });
+    const file = new File([blob], `parking_data_${parkingId}.xml`, { type: 'application/xml' });
     const formData = new FormData();
-    formData.append('file', blob, `parking_data_${parkingId}.xml`);
+    formData.append('file', file);
 
-    return this.http.post(`${this.apiUrl}/${parkingId}/xml-topview`, formData);
-  }
+    // Log the FormData contents
+   // Log each form data entry
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+
+
+    return this.http.post(`${this.apiUrl}/${parkingId}/xmltopview`, formData, {
+      headers: { 'Accept': '*/*' }, // Content-Type is automatically set by FormData
+      responseType: 'text'
+    }).pipe(
+      tap(response => console.log('Server Response:', response)),
+      catchError(error => {
+        console.error('Error uploading XML:', error);
+        return throwError(error);
+      })
+    );
+}
+
+
+
 
 }
