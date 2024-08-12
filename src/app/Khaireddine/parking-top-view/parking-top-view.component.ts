@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CanvasService } from '../services/Canvas.service';
 import { ShapeService } from '../services/shape.service';
-import { XmlService } from '../services/Xml.service';
+import { XmlService } from '../services/xml.service';
 import { ParkingService } from '../services/parking.service';
 import { Parking } from '../models/parking.model';
 import { HttpClient } from '@angular/common/http';
