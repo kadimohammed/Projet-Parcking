@@ -15,4 +15,8 @@ export class ClientService {
   getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.apiUrl);
   }
+
+  getTopClients(): Observable<Client[]> {
+    return this.http.get<Client[]>(this.apiUrl+"/top");
+  }
 }

@@ -45,8 +45,8 @@ export class ParkingService {
     return this.http.delete<void>(url);
   }
 
-  addParking(parking: AddParkingVM): Observable<AddParkingVM> {
-    return this.http.post<AddParkingVM>(`${this.apiUrl}`, parking);
+  addParking(parkingData: FormData): Observable<AddParkingVM> {
+    return this.http.post<AddParkingVM>(`${this.apiUrl}`, parkingData);
   }
 
    // Méthode pour mettre à jour un parking

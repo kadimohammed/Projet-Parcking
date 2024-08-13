@@ -1,4 +1,3 @@
-// services/parking-form.service.ts
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Jours } from '../models/jours.enum';
@@ -11,17 +10,17 @@ export class ParkingFormService {
 
   createAddParkingForm(): FormGroup {
     return this.fb.group({
-        latitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-        longitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-        nomParcking: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-        adresse: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-        surface: ['', [Validators.required, Validators.min(50)]],
-        timeStartWork: ['', Validators.required],
-        timeEndWork: ['', Validators.required],
-        creationDate: ['', Validators.required],
-        isWorking: [false],
-        jours: this.fb.array(this.createDaysArray()),
-        photoParkings: [null, Validators.required] 
+      Latitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+      Longitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+      NomParcking: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      Adresse: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      Surface: ['', [Validators.required, Validators.min(50)]],
+      TimeStartWork: ['', Validators.required],
+      TimeEndWork: ['', Validators.required],
+      CreationDate: ['', Validators.required],
+      IsWorking: [false],
+      Jours: this.fb.array(this.createDaysArray()),
+      photoParkings: this.fb.array([]) // Initialize as an empty FormArray
     });
   }
 
@@ -29,5 +28,7 @@ export class ParkingFormService {
     return Object.keys(Jours).map(day => this.fb.control(false));
   }
 
-  
+  createFileControl(file: File): FormControl {
+    return this.fb.control(file, Validators.required);
+  }
 }

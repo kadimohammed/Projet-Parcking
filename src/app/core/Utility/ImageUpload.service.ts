@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -38,21 +38,26 @@ export class ImageUploadService {
   }
 
   handleFileChange(event: Event, form: FormGroup) {
-    const files = (event.target as HTMLInputElement).files;
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
 
     if (files && files.length > 0) {
       const { isValid, invalidFiles } = this.validateFiles(files);
 
       if (isValid) {
-        form.get('photoParkings')?.setValue(files);
+        const photoArray = form.get('photoParkings') as FormArray;
+        photoArray.clear();  // Clear any previous entries
+
+        Array.from(files).forEach(file => {
+          photoArray.push(new FormControl(file));
+        });
+
         form.get('photoParkings')?.setErrors(null);
       } else {
-        form.get('photoParkings')?.setErrors({ invalidFiles: { errors: invalidFiles } });
+        form.get('photoParkings')?.setErrors({ invalidFiles });
       }
     } else {
       form.get('photoParkings')?.setErrors({ required: true });
     }
   }
-  
-  
 }

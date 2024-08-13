@@ -6,6 +6,8 @@ import { ParkingTopVM } from '../../core/ViewModels/ParkingTopVM';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { RouterLink } from '@angular/router';
+import { ClientService } from '../../core/services/client.service';
+import { Client } from '../../core/models/client.model';
 
 @Component({
   selector: 'app-cards',
@@ -18,8 +20,9 @@ export class CardsComponent implements OnInit {
 
   artisansTop: ArtisansTopVM[] = [];
   parkingsTop: ParkingTopVM[] = [];
+  clientTop: Client[] = [];
 
-  constructor(private artisanService : ArtisanService,private parkingService:ParkingService){
+  constructor(private artisanService : ArtisanService,private parkingService:ParkingService,private clientService : ClientService){
 
   }
 
@@ -27,6 +30,7 @@ export class CardsComponent implements OnInit {
   ngOnInit(): void {
     this.getTopArtisans();
     this.getTopParkings();
+    this.getTopClient();
   }
 
 
@@ -46,7 +50,6 @@ export class CardsComponent implements OnInit {
   getTopParkings(){
     this.parkingService.getTopParkings().subscribe(
       data => {
-        console.log("hiho"+data);
         this.parkingsTop = data;
       },
       error => {
@@ -55,6 +58,26 @@ export class CardsComponent implements OnInit {
     );
   }
 
+
+  getTopClient(){
+    this.clientService.getTopClients().subscribe(
+      data => {
+        this.clientTop = data;
+      },
+      error => {
+        console.error("Error occurred while fetching data:", error);
+      }
+    );
+  }
+
+
+  getClientPairs(clients: Client[]): Client[][] {
+    const pairs = [];
+    for (let i = 0; i < clients.length; i += 2) {
+      pairs.push(clients.slice(i, i + 2));
+    }
+    return pairs;
+  }
 
 
   cardClasses: string[] = [
