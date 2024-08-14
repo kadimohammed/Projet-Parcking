@@ -1,5 +1,5 @@
 
-<section class="h-100 gradient-custom-2" >
+<section *ngIf="parking.adresse" class="h-100 gradient-custom-2" >
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center">
       <div class="col col-lg-9 col-xl-8" style="width: 100%;">
@@ -53,9 +53,14 @@
                                           <p><b>{{ parking.timeEndWork | timeFormat}}</b></p>
                                       </div>
                                       <div class="media">
-                                          <label>Freelance</label>
-                                          <p><b>122</b></p>
-                                      </div>
+                                        <label>Days Work :</label>
+                                        <p>
+                                          <b *ngFor="let jour of parking.jours; let i = index">
+                                            {{ daysOfWeek[+jour.jour - 1] }}
+                                            <span *ngIf="parking.jours!= null && i < parking.jours.length - 1"> - </span>
+                                          </b>
+                                        </p>
+                                      </div>                                      
                                   </div>
                               </div>
                           </div>
@@ -68,6 +73,7 @@
                           </div>
                       </div>
                   </div><br>
+
                   <div class="counter">
                       <div class="row">
                           <div class="col-6 col-lg-3">
@@ -97,11 +103,7 @@
                       </div>
                   </div>
               </div>
-            </section>
-            
-            
-            
-            
+            </section><br>
 
             <h5 class="lead fw-normal mb-1"><b>Services State :</b></h5>
             <div class="card-body">

@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-details-Artisan',
@@ -21,16 +22,19 @@ export class DetailsArtisanComponent implements OnInit {
   totalCount: number = 0;
   stateCounts: { [key: string]: number } = {};
   ServiceEtat = ServiceEtat;
+  daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   @ViewChild(AlertMessageComponent) message!: AlertMessageComponent;
 
 
   constructor(
     private artisanService: ArtisanService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.artisanId = +this.route.snapshot.paramMap.get('id')!;
     this.getArtisan(this.artisanId);
   }
@@ -38,10 +42,12 @@ export class DetailsArtisanComponent implements OnInit {
   getArtisan(id:number): void {
     this.artisanService.getArtisansById(id).subscribe({
       next: (data) => {
+        this.loadingService.hide();
         this.Artisan  = data;
         this.calculateServiceStates();
       },
       error: (error: HttpErrorResponse) => {
+        this.loadingService.hide();
         console.error('Error loading artisan types', error);
       }
     });
@@ -57,6 +63,7 @@ export class DetailsArtisanComponent implements OnInit {
         return counts;
       }, {} as { [key in ServiceEtat]?: number });
     }
+    console.log(this.Artisan.arisantJoursWorks);
   }
 
   getPercentage(state: ServiceEtat): number {

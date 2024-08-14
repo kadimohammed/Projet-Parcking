@@ -15,6 +15,6 @@ export interface Artisan extends User {
   typeArtisanId: number;
   active: boolean;
   artisanClientServices?: ArtisanClientService[];
-  arisanJoursWorks?: ArisanJours[];
+  arisantJoursWorks?: ArisanJours[];
   artisanImages?: ImageArtisan[];
 }

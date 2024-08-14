@@ -76,7 +76,7 @@ export class ParkingsMapsComponent implements OnInit {
   private initMap(): void {
     this.map = L.map('map', {
       center: [this.parkings[0].latitude, this.parkings[0].longitude], 
-      zoom: 13
+      zoom: 14
     });
 
     // Utiliser les tuiles Stamen Toner pour un mode sombre gratuit

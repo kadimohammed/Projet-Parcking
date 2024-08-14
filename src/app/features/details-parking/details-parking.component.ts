@@ -5,6 +5,7 @@ import { ParkingService } from '../../core/services/parking.service';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-parking-details',
@@ -17,11 +18,18 @@ export class ParkingDetailsComponent  implements OnInit{
 
   parking : ParkingDetails = {} as ParkingDetails;
   error: string | undefined;
-  constructor(private route : ActivatedRoute,private parkingService: ParkingService){
+  daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+
+  constructor(
+    private route : ActivatedRoute,
+    private parkingService: ParkingService,
+    private loadingService: LoadingService){
 
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     const id = this.route.snapshot.params['id'];
     this.getParking(id);
   }
@@ -31,10 +39,12 @@ export class ParkingDetailsComponent  implements OnInit{
   getParking(id: number): void {
     this.parkingService.getParking(id).subscribe(
       (data: ParkingDetails) => {
+        this.loadingService.hide();
         this.parking = data;
-        console.log(this.parking);
+        console.log( this.parking);
       },
       (error: any) => {
+        this.loadingService.hide();
         this.error = 'Erreur lors de la récupération des détails du parking';
       }
     );

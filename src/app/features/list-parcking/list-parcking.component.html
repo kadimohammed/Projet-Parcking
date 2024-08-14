@@ -1,6 +1,6 @@
 <!-- Content -->
 
-<div class="container-xxl flex-grow-1 container-p-y">
+<div *ngIf="parkings.length !== 0" class="container-xxl flex-grow-1 container-p-y">
 
   <div>
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">List /</span> Parckings</h4>
@@ -59,8 +59,8 @@
             }
             <td style="display: flex;justify-content: space-between;align-items: center;gap: 15px;">
               <a [routerLink]="['/parkingsmap/',parking.id]"><i class='bx bx-current-location'></i></a>
-              <a [routerLink]="['/cameraview/',parking.id]"><i class='bx bxs-camera-home' ></i></a>
-              <a [routerLink]="['/topview/',parking.id]"><i class='bx bxs-map-alt'></i></a>
+              <!-- <a [routerLink]="['/cameraview/',parking.id]"><i class='bx bxs-camera-home' ></i></a>
+              <a [routerLink]="['/topview/',parking.id]"><i class='bx bxs-map-alt'></i></a> -->
               <a  [routerLink]="['/parkings/edit/',parking.id]"><i class="bx bx-edit-alt"></i></a>
               <a [routerLink]="['/parkings/details/',parking.id]"><i class='bx bxs-detail'></i></a>
               <a style="cursor: pointer;" (click)="deleteParking(parking.id)"><i class="bx bx-trash"></i></a>

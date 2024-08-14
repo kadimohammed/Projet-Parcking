@@ -5,6 +5,7 @@ import { TypeArtisan } from '../../core/models/TypeArtisan.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { ArtisanTypesService } from '../../core/services/ArtisanTypes.service';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-list-type-artisan',
@@ -25,22 +26,28 @@ export class ListTypeArtisanComponent implements OnInit{
   searchText: string = '';
   message : MessageState = {message :'',state:true};
 
-  constructor(private artisanTypeService:ArtisanTypesService){
+  constructor(
+    private artisanTypeService:ArtisanTypesService,
+    private loadingService: LoadingService
+  ){
 
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.loadArtisanTypes();
   }
 
   loadArtisanTypes(): void {
     this.artisanTypeService.getArtisanTypes().subscribe({
       next: (data) => {
+        this.loadingService.hide();
         this.ArtisanTypes = data;
         this.updatePaginatedArtisanTypes();
         this.changeMessage('',true);
       },
       error: (error: HttpErrorResponse) => {
+        this.loadingService.hide();
         this.changeMessage(this.artisanTypeService.errorMessage,false);
     }});
   }

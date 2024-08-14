@@ -84,6 +84,7 @@ export class ListParckingComponent implements OnInit {
       this.parkingService.deleteParking(id).subscribe(
         () => {
           this.parkings = this.parkings.filter(p => p.id !== id);
+          this.loadParkings();
           alert('Parking supprimé avec succès.');
         },
         (error: any) => {

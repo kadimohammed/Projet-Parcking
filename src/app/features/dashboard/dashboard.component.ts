@@ -14,12 +14,14 @@ import { ArtisanClientService } from '../../core/models/artisan-client-service.m
 import { ServiceEtat } from '../../core/models/service-etat.enum';
 import { Lot } from '../../core/models/lot.model';
 import { ClientParking } from '../../core/models/client-parking.model';
+import { NgIf } from '@angular/common';
+import { LoadingService } from '../../core/services/loading.service';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -39,12 +41,14 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     private clientService : ClientService,
     private adminService : AuthService,
     private statisticsService : StatisticsService,
+    private loadingService: LoadingService
   ){
     Chart.register(LinearScale,CategoryScale, LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
 
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.getParkings();
     this.getArtisans();
     this.getClients();
@@ -73,8 +77,10 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     this.parkingService.getAllParkings().subscribe({
       next: (data) => {
         this.Parkings = data;
+        this.loadingService.hide();
       },
       error: (error: HttpErrorResponse) => {
+        this.loadingService.hide();
     }});
   }
 

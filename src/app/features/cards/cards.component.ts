@@ -8,6 +8,7 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { RouterLink } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { Client } from '../../core/models/client.model';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-cards',
@@ -22,12 +23,17 @@ export class CardsComponent implements OnInit {
   parkingsTop: ParkingTopVM[] = [];
   clientTop: Client[] = [];
 
-  constructor(private artisanService : ArtisanService,private parkingService:ParkingService,private clientService : ClientService){
+  constructor(
+    private artisanService : ArtisanService,
+    private parkingService:ParkingService,
+    private clientService : ClientService,
+    private loadingService: LoadingService){
 
   }
 
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.getTopArtisans();
     this.getTopParkings();
     this.getTopClient();
@@ -39,9 +45,11 @@ export class CardsComponent implements OnInit {
     this.artisanService.getTopArtisans().subscribe(
       data => {
         this.artisansTop = data;
+        this.loadingService.hide();
       },
       error => {
         console.error("Error occurred while fetching data:", error);
+        this.loadingService.hide();
       }
     );
   }
@@ -63,6 +71,7 @@ export class CardsComponent implements OnInit {
     this.clientService.getTopClients().subscribe(
       data => {
         this.clientTop = data;
+        this.clientPairs = this.getClientPairs();
       },
       error => {
         console.error("Error occurred while fetching data:", error);
@@ -70,11 +79,12 @@ export class CardsComponent implements OnInit {
     );
   }
 
+  clientPairs: Client[][] = [];
 
-  getClientPairs(clients: Client[]): Client[][] {
+  getClientPairs(): Client[][] {
     const pairs = [];
-    for (let i = 0; i < clients.length; i += 2) {
-      pairs.push(clients.slice(i, i + 2));
+    for (let i = 0; i < this.clientTop.length; i += 2) {
+      pairs.push(this.clientTop.slice(i, i + 2));
     }
     return pairs;
   }
