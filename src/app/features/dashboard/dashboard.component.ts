@@ -8,24 +8,25 @@ import { ClientService } from '../../core/services/client.service';
 import { Client } from '../../core/models/client.model';
 import { AuthService } from '../../core/services/AuthService.service';
 import { Admin } from '../../core/models/admin.model';
-import { Chart,BarController,LineController,PointElement,LineElement ,CategoryScale , LinearScale, BarElement, Title, Tooltip, Legend, ChartConfiguration } from 'chart.js';
+import { Chart,BarController,ArcElement,LineController,DoughnutController ,PointElement,LineElement ,CategoryScale , LinearScale, BarElement, Title, Tooltip, Legend, ChartConfiguration } from 'chart.js';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { ArtisanClientService } from '../../core/models/artisan-client-service.model';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
 import { Lot } from '../../core/models/lot.model';
 import { ClientParking } from '../../core/models/client-parking.model';
-import { NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { LoadingService } from '../../core/services/loading.service';
+import { ClientParkingStatisticVM } from '../../core/ViewModels/ClientParkingStatisticVM';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf,NgClass,NgFor,NgStyle],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit,AfterViewInit  {
+export class DashboardComponent implements OnInit  {
 
   Parkings : Parking[] = [];
   Artisans : Artisan[] = [];
@@ -34,6 +35,8 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
   Lots : Lot[] = [];
   ClientParking : ClientParking[] = [];
   ArtisanClientService : ArtisanClientService[] = [];
+  ParkingsByDayOfWeek : number[] = [];
+  clientParkingStatisticVM : ClientParkingStatisticVM[] = [];
 
   constructor(
     private parkingService : ParkingService,
@@ -43,7 +46,7 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     private statisticsService : StatisticsService,
     private loadingService: LoadingService
   ){
-    Chart.register(LinearScale,CategoryScale, LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
+    Chart.register(LinearScale,ArcElement,CategoryScale,DoughnutController , LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
 
   }
 
@@ -56,11 +59,20 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     this.getLots();
     this.getParkedClients();
     this.GetAllArtisanClientServices();
+    this.getParkingsByDayOfWeek();
+    this.getgetClientsByParking();
   }
 
-  ngAfterViewInit(): void {
+  getParkingColor(index: number): string {
+    switch (index) {
+        case 0: return '#71dd37'; // Couleur pour le premier parking
+        case 1: return '#03c3ec'; // Couleur pour le deuxième parking
+        case 2: return '#696cff'; // Couleur pour le troisième parking
+        case 3: return '#ffab00'; // Couleur pour le quatrième parking
+        default: return '#000';    // Couleur par défaut
+    }
+}
 
-  }
 
   GetAllArtisanClientServices(){
     this.statisticsService.getArtisanClientServices().subscribe({
@@ -71,6 +83,72 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
       error: (error: HttpErrorResponse) => {
     }});
   }
+
+
+  getParkingsByDayOfWeek() {
+    this.statisticsService.getParkingsByDayOfWeek().subscribe({
+      next:(data) => { // Spécifiez le type attendu ici
+        this.ParkingsByDayOfWeek = data;
+        this.createDayOfWeekChart();
+      },
+      error: (error) => {
+        console.error('Error fetching parking data', error);
+      }
+    });
+  }
+
+
+
+  getgetClientsByParking() {
+    this.statisticsService.getClientsByParking().subscribe({
+      next:(data) => { 
+        this.clientParkingStatisticVM = data;
+        console.log(data);
+      },
+      error: (error) => {
+        console.error('Error fetching parking data', error);
+      }
+    });
+  }
+
+  calculateTotalClients(): number {
+    return this.clientParkingStatisticVM.reduce((total, parking) => {
+        return total + (parseInt(parking.clientCount) || 0);
+    }, 0);
+  }
+  
+
+  createDayOfWeekChart() {
+    const labels = Object.keys(this.ParkingsByDayOfWeek);
+    const data = Object.values(this.ParkingsByDayOfWeek);
+
+    const chartData = {
+      labels: labels,
+      datasets: [{
+        label: 'Parkings actifs par jour',
+        data: data,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(153, 102, 255)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 206, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const config: ChartConfiguration<'doughnut', number[], string> = {
+      type: 'doughnut',
+      data: chartData,
+    };
+
+    const ctx = document.getElementById('dayChart') as HTMLCanvasElement;
+    new Chart(ctx, config);
+}
+
 
 
   getParkings(){
@@ -89,7 +167,6 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     this.statisticsService.getParkedClient().subscribe({
       next: (data) => {
         this.ClientParking = data;
-        console.log(data);
         this.createDurationChart();
       },
       error: (error: HttpErrorResponse) => {
@@ -243,9 +320,6 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
 
 
   createDurationChart() {
-    console.log(this.ClientParking);
-    console.log('Creating duration chart with data:', this.ClientParking);
-  
     const ctx = document.getElementById('durationChart') as HTMLCanvasElement;
   
     if (ctx && this.ClientParking.length > 0) {
@@ -268,8 +342,7 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
           intervalCounts[parkingHour] += 1; // Incrémentez le compte de l'intervalle correspondant
         }
       });
-  
-      console.log('Interval counts:', intervalCounts); // Vérifiez les comptages des intervalles
+
   
       const data = {
         labels: intervals.map(interval => interval.label),
