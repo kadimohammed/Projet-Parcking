@@ -5,14 +5,15 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ArtisanClientService } from '../../core/models/artisan-client-service.model';
 import { ArtisanTypesService } from '../../core/services/ArtisanTypes.service';
 import { AddArtisanTypeVM } from '../../core/ViewModels/AddArtisanTypeVM';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { AlertMessageComponent } from '../alert-message/alert-message.component';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-add-type-artisan',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,NgFor,NgClass,AlertMessageComponent],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,NgFor,NgClass,AlertMessageComponent,RouterLink],
   templateUrl: './add-type-artisan.component.html',
   styleUrl: './add-type-artisan.component.css'
 })
@@ -24,6 +25,7 @@ export class AddTypeArtisanComponent {
   (
     private typeForm : ArtisanTypesForm,
     private artisanTypesSrvice:ArtisanTypesService,
+    private loadingService: LoadingService
   ){}
 
   ngOnInit(): void {
@@ -32,15 +34,18 @@ export class AddTypeArtisanComponent {
 
   
   onSubmit() {
+    
     if (this.addtypeForm.valid) {
-
+      this.loadingService.show();
       const typeData: AddArtisanTypeVM = this.addtypeForm.value;
 
       this.artisanTypesSrvice.addArtisanType(typeData).subscribe(
         response => {
-          this.message.changeMessage('type ajouter avec sucess',true);
+          this.loadingService.hide();
+          this.message.changeMessage('Artisan type added successfully.',true);
         },
         error => {
+          this.loadingService.hide();
           this.message.changeMessage(this.artisanTypesSrvice.errorMessage,false);
         }
       );

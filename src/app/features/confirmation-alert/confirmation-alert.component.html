@@ -1,0 +1,30 @@
+<!-- <div style="display: flex;align-items: center;justify-content: center;">
+    @if(message.message != ''){
+        @if(!message.state){
+            <div class="alert alert-danger" role="alert">{{message.message}}</div>
+        }
+        @else {
+            <div class="alert alert-success" role="alert">{{message.message}}</div>
+        }
+    }    
+</div> -->
+
+
+@if(message != ''){
+    <div class="alert-containner">
+        <div class="bs-toast toast fade show bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Alert</div>
+            <button type="button" class="btn-close" (click)="hideAlert()"></button>
+            </div>
+            <div class="toast-body">
+                <span class="message-alert">{{message}}</span>
+            </div>
+            <div class="button-alert-div">
+                <button (click)="confirmAction()" type="button" class="btn btn-outline-warning">Yes</button>
+                <button (click)="hideAlert()" type="button" class="btn btn-outline-warning">CANCEL</button>
+            </div>
+        </div>
+    </div>
+}

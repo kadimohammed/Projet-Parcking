@@ -9,6 +9,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Edit Parking</h5>
+                    <button [routerLink]="['/parkings']"  type="submit" class="btn btn-primary">Back To List</button>
                 </div>
                 <div class="card-body">
                     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
@@ -27,6 +28,10 @@
                                 <div *ngIf="nameInput.errors?.['maxlength']">Name cannot be more than 100 characters long.</div>
                             </div>
                         </div>
+
+                        <div id="mapContainer" #mapContainer style="height: 400px; width: 100%;"></div>
+                        <br>
+                        
                         <div class="mb-3">
                             <label class="form-label" for="latitude">Latitude</label>
                             <div class="input-group input-group-merge">

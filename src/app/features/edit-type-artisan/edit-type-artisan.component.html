@@ -9,12 +9,13 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Update Type Artisan</h5>
+                    <button [routerLink]="['/typesArtisan']" type="submit" class="btn btn-primary">Back To List</button>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="updatetypeForm" (ngSubmit)="onSubmit()">
                         <div class="mb-3">
-                            <label class="form-label" for="libelle">Libelle</label>
-                            <input type="text" class="form-control" id="libelle" placeholder="libelle"
+                            <label class="form-label" for="libelle">Name</label>
+                            <input type="text" class="form-control" id="libelle" placeholder="Name"
                                    formControlName="libelle" value="{{oldLibelle}}"/>
                             <div *ngIf="updatetypeForm.get('libelle')?.invalid && (updatetypeForm.get('libelle')?.dirty || updatetypeForm.get('libelle')?.touched)" class="form-text">
                                 <div *ngIf="updatetypeForm.get('libelle')?.errors?.['required']">libelle is required.</div>

@@ -1,7 +1,5 @@
 <div *ngIf="paginatedArtisans.length !== 0" class="container-xxl flex-grow-1 container-p-y">
-  <div *ngIf="message.message != ''" class="alert" [ngClass]="message.state ? 'alert-success' : 'alert-danger'" role="alert">
-    {{ message.message }}
-  </div>
+  <app-confirmation-alert (confirmed)="onConfirmed($event)"></app-confirmation-alert>
   <div>
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">List /</span> Artisans</h4>
   </div>
@@ -14,7 +12,7 @@
     </div>
     <div class="form-check form-switch mb-2">
       <input (change)="getArtisanNonActive($event)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
-      <label class="form-check-label" for="flexSwitchCheckChecked">Artisan Non Active</label>
+      <label class="form-check-label" for="flexSwitchCheckChecked">Artisan No Active</label>
     </div>
     <div class="input-group input-group-merge" style="width: 30%;">
       <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
@@ -34,8 +32,7 @@
             <th>Telephone</th>
             <th>Profession</th>
             <th>Rating</th>
-            <th>Type</th>
-            <th>Active</th>
+            <th>State</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -54,7 +51,6 @@
             <td>{{ artisan.tel }}</td>
             <td>{{ artisan.profession }}</td>
             <td><span class="badge badge-center rounded-pill bg-label-primary">{{ artisan.rating }}</span></td>
-            <td>{{ artisan.type.libelle }}</td>
             <td>
               <span [ngClass]="artisan.active ? 'badge bg-label-success me-1' : 'badge bg-label-danger me-1'">
                 {{ artisan.active ? 'Active' : 'No Active' }}

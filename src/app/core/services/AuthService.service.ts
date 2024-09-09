@@ -14,7 +14,6 @@ import { logintTkenVM } from '../ViewModels/logintokenVM';
 export class AuthService {
   private baseUrl = 'https://localhost:7009/api/Admin';
   private key : string = 'admin';
-  private adminUser : logintTkenVM = {} as logintTkenVM;
   public errorMessage : string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -23,7 +22,6 @@ export class AuthService {
     return this.http.post<logintTkenVM>(`${this.baseUrl}`, loginModel).pipe(
       tap(response => {
         localStorage.setItem(this.key, JSON.stringify(response));
-        this.adminUser = response;
       }),
       catchError((error: HttpErrorResponse) => {
         switch (error.status) {
@@ -71,7 +69,12 @@ export class AuthService {
   }
 
   getToken() {
-    return this.adminUser.token;
+    const user = localStorage.getItem(this.key);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser.token;
+    }
+    return null;
   }
 
   changeProfile(profile: ChangeProfileAdminVM): Observable<any> {

@@ -6,16 +6,17 @@ import { RouterLink } from '@angular/router';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { Parking } from '../../core/models/parcking.model';
 import { LoadingService } from '../../core/services/loading.service';
+import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
 
 @Component({
   selector: 'app-list-parcking',
   standalone: true,
-  imports: [NgFor,CommonModule,MatPaginator,RouterLink,TimeFormatPipe],
+  imports: [NgFor,CommonModule,MatPaginator,RouterLink,TimeFormatPipe,ConfirmationAlertComponent],
   templateUrl: './list-parcking.component.html',
   styleUrl: './list-parcking.component.css'
 })
 export class ListParckingComponent implements OnInit {
-
+  @ViewChild(ConfirmationAlertComponent) confirmation!: ConfirmationAlertComponent;
   parkings: Parking[] = [];
   totalCount: number = 0;
   currentPage: number = 1;
@@ -79,19 +80,28 @@ export class ListParckingComponent implements OnInit {
     }
   }
 
-  deleteParking(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce parking ?')) {
-      this.parkingService.deleteParking(id).subscribe(
+  parkingIdToDelete: number | null = null;
+
+
+  deleteParking(typeId: number): void {
+    this.parkingIdToDelete = typeId; 
+    this.confirmation.changeMessage('Are you sure you want to delete this artisan?');
+  }
+
+  onConfirmed(confirmed: boolean) {
+    if (confirmed && this.parkingIdToDelete !== null) {
+      this.parkingService.deleteParking(this.parkingIdToDelete).subscribe(
         () => {
-          this.parkings = this.parkings.filter(p => p.id !== id);
+          this.parkings = this.parkings.filter(p => p.id !== this.parkingIdToDelete);
           this.loadParkings();
-          alert('Parking supprimé avec succès.');
+          this.parkingIdToDelete = null;
         },
         (error: any) => {
-          console.error('Erreur lors de la suppression du parking:', error);
-          alert('Erreur lors de la suppression du parking.');
+          this.parkingIdToDelete = null;
         }
       );
+    } else {
+      this.parkingIdToDelete = null;
     }
   }
 

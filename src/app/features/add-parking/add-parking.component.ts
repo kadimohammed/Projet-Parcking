@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParkingService } from '../../core/services/parking.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ParkingFormService } from '../../core/FormService/ParkingForm.service';
 import { ImageUploadService } from '../../core/Utility/ImageUpload.service';
 import { NgFor, NgIf } from '@angular/common';
 import { AddParkingVM } from '../../core/ViewModels/AddParkingVM';
-
+import { AlertMessageComponent } from '../alert-message/alert-message.component';
+import { LoadingService } from '../../core/services/loading.service';
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
 @Component({
   selector: 'app-add-parking',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor],
+  imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor,AlertMessageComponent,RouterLink],
   templateUrl: './add-parking.component.html',
   styleUrls: ['./add-parking.component.css']
 })
 export class AddParkingComponent implements OnInit {
+  @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
+  map!: L.Map;
+  marker!: L.Marker;
+
+  @ViewChild(AlertMessageComponent) message!: AlertMessageComponent;
   addParkingForm!: FormGroup;
   uploadedImages: string[] = [];
   uploadedFileNames: string[] = [];
@@ -24,15 +32,50 @@ export class AddParkingComponent implements OnInit {
     private parkingService: ParkingService,
     private router: Router,
     private parkingFormService: ParkingFormService,
-    private imageUploadService: ImageUploadService
+    private imageUploadService: ImageUploadService,
+    private loadingService : LoadingService
   ) {}
 
   ngOnInit(): void {
+    this.initializeMap();
     this.addParkingForm = this.parkingFormService.createAddParkingForm();
   }
 
+  initializeMap(): void {
+    this.map = L.map(this.mapContainer.nativeElement).setView([34.9307773, -2.309294], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    // Créer l'icône personnalisée
+    const customIcon = L.icon({
+      iconUrl: 'https://www.iconpacks.net/icons/2/free-parking-sign-icon-2526-thumb.png', // chemin vers votre icône personnalisée
+      iconSize: [50, 50], // taille de l'icône
+      iconAnchor: [19, 38], // point de l'icône qui correspondra à la position du marqueur
+      popupAnchor: [0, -38] // point du popup par rapport au point d'ancrage de l'icône
+    });
+
+    this.map.on('click', (event: L.LeafletMouseEvent) => {
+      const { lat, lng } = event.latlng;
+      
+      if (this.marker) {
+        this.marker.setLatLng([lat, lng]);
+      } else {
+        this.marker = L.marker([lat, lng], { icon: customIcon }).addTo(this.map);
+      }
+
+      this.addParkingForm.patchValue({
+        Latitude: lat,
+        Longitude: lng
+      });
+    });
+}
+
+
   onSubmit() {
     if (this.addParkingForm.valid) {
+      this.loadingService.show();
       const parkingData = this.addParkingForm.value as Record<string, any>;
   
       // Ensure Jours is an array of boolean values
@@ -68,15 +111,18 @@ export class AddParkingComponent implements OnInit {
   
       this.parkingService.addParking(formData).subscribe(
         response => {
-          console.log('Parking added successfully:', response);
-          // this.router.navigate(['/parkings']);
+          this.loadingService.hide();
+          this.message.changeMessage('Parking added successfully.',true);
         },
         error => {
-          console.error('Error adding parking:', error);
+          this.loadingService.hide();
+          this.message.changeMessage('Error adding parking.',false);
+          console.log(error.error);
         }
       );
     } else {
-      console.error('Form is invalid');
+      this.loadingService.hide();
+      this.message.changeMessage('Form is invalid',false);
     }
   }
   

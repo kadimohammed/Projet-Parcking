@@ -8,7 +8,7 @@ import { ClientService } from '../../core/services/client.service';
 import { Client } from '../../core/models/client.model';
 import { AuthService } from '../../core/services/AuthService.service';
 import { Admin } from '../../core/models/admin.model';
-import { Chart,BarController,ArcElement,LineController,DoughnutController ,PointElement,LineElement ,CategoryScale , LinearScale, BarElement, Title, Tooltip, Legend, ChartConfiguration } from 'chart.js';
+import { Chart,BarController,RadarController,RadialLinearScale,ArcElement,LineController,DoughnutController ,PointElement,LineElement ,CategoryScale , LinearScale, BarElement, Title, Tooltip, Legend, ChartConfiguration } from 'chart.js';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { ArtisanClientService } from '../../core/models/artisan-client-service.model';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
@@ -17,8 +17,9 @@ import { ClientParking } from '../../core/models/client-parking.model';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { LoadingService } from '../../core/services/loading.service';
 import { ClientParkingStatisticVM } from '../../core/ViewModels/ClientParkingStatisticVM';
+import { ArtisanParTypeCount } from '../../core/ViewModels/ArtisanParTypeCountVM';
 
-
+//Chart, ChartConfiguration, , Tooltip, Legend
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -37,6 +38,8 @@ export class DashboardComponent implements OnInit  {
   ArtisanClientService : ArtisanClientService[] = [];
   ParkingsByDayOfWeek : number[] = [];
   clientParkingStatisticVM : ClientParkingStatisticVM[] = [];
+  artisanParTypeCount : ArtisanParTypeCount[] = [];
+  
 
   constructor(
     private parkingService : ParkingService,
@@ -46,12 +49,11 @@ export class DashboardComponent implements OnInit  {
     private statisticsService : StatisticsService,
     private loadingService: LoadingService
   ){
-    Chart.register(LinearScale,ArcElement,CategoryScale,DoughnutController , LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
-
+    Chart.register(LinearScale,RadarController,RadialLinearScale,ArcElement,CategoryScale,DoughnutController , LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
+    this.loadingService.show();
   }
 
   ngOnInit(): void {
-    this.loadingService.show();
     this.getParkings();
     this.getArtisans();
     this.getClients();
@@ -61,6 +63,9 @@ export class DashboardComponent implements OnInit  {
     this.GetAllArtisanClientServices();
     this.getParkingsByDayOfWeek();
     this.getgetClientsByParking();
+    this.getRatingDistribution();
+    this.getSurfaceDistribution();
+    this.getArtisanParTypeCount();
   }
 
   getParkingColor(index: number): string {
@@ -74,36 +79,11 @@ export class DashboardComponent implements OnInit  {
 }
 
 
-  GetAllArtisanClientServices(){
-    this.statisticsService.getArtisanClientServices().subscribe({
-      next: (data) => {
-        this.ArtisanClientService = data;
-        this.createServicesChart();
-      },
-      error: (error: HttpErrorResponse) => {
-    }});
-  }
-
-
-  getParkingsByDayOfWeek() {
-    this.statisticsService.getParkingsByDayOfWeek().subscribe({
-      next:(data) => { // Spécifiez le type attendu ici
-        this.ParkingsByDayOfWeek = data;
-        this.createDayOfWeekChart();
-      },
-      error: (error) => {
-        console.error('Error fetching parking data', error);
-      }
-    });
-  }
-
-
 
   getgetClientsByParking() {
     this.statisticsService.getClientsByParking().subscribe({
       next:(data) => { 
         this.clientParkingStatisticVM = data;
-        console.log(data);
       },
       error: (error) => {
         console.error('Error fetching parking data', error);
@@ -118,60 +98,17 @@ export class DashboardComponent implements OnInit  {
   }
   
 
-  createDayOfWeekChart() {
-    const labels = Object.keys(this.ParkingsByDayOfWeek);
-    const data = Object.values(this.ParkingsByDayOfWeek);
-
-    const chartData = {
-      labels: labels,
-      datasets: [{
-        label: 'Parkings actifs par jour',
-        data: data,
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(153, 102, 255)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 206, 86)'
-        ],
-        hoverOffset: 4
-      }]
-    };
-
-    const config: ChartConfiguration<'doughnut', number[], string> = {
-      type: 'doughnut',
-      data: chartData,
-    };
-
-    const ctx = document.getElementById('dayChart') as HTMLCanvasElement;
-    new Chart(ctx, config);
-}
-
-
 
   getParkings(){
     this.parkingService.getAllParkings().subscribe({
       next: (data) => {
         this.Parkings = data;
-        this.loadingService.hide();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.loadingService.hide();
-    }});
-  }
-
-
-  getParkedClients(){
-    this.statisticsService.getParkedClient().subscribe({
-      next: (data) => {
-        this.ClientParking = data;
-        this.createDurationChart();
       },
       error: (error: HttpErrorResponse) => {
     }});
   }
+
+
 
   getLots(){
     this.statisticsService.getLots().subscribe({
@@ -182,7 +119,6 @@ export class DashboardComponent implements OnInit  {
     }});
   }
 
-  
 
 
   getArtisans(){
@@ -251,6 +187,22 @@ export class DashboardComponent implements OnInit  {
   }
 
   
+  
+  getArtisanParTypeCount(){
+    this.statisticsService.getArtisanParTypeCount().subscribe({
+      next: (data) => {
+        this.artisanParTypeCount = data;
+        console.log(this.artisanParTypeCount);
+      },
+      error: (error: HttpErrorResponse) => {
+    }});
+  }
+
+
+  
+
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getServiceCountsByEtat(): { [key: string]: number } {
     return this.ArtisanClientService.reduce((acc, service) => {
@@ -261,6 +213,15 @@ export class DashboardComponent implements OnInit  {
   }
   
 
+  GetAllArtisanClientServices(){
+    this.statisticsService.getArtisanClientServices().subscribe({
+      next: (data) => {
+        this.ArtisanClientService = data;
+        this.createServicesChart();
+      },
+      error: (error: HttpErrorResponse) => {
+    }});
+  }
 
   createServicesChart() {
     const ctx = document.getElementById('artisanChart') as HTMLCanvasElement;
@@ -317,6 +278,20 @@ export class DashboardComponent implements OnInit  {
     }
   }
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  getParkedClients(){
+    this.statisticsService.getParkedClient().subscribe({
+      next: (data) => {
+        this.ClientParking = data;
+        console.log(data.length);
+        this.createDurationChart();
+        this.loadingService.hide();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loadingService.hide();
+    }});
+  }
 
 
   createDurationChart() {
@@ -390,10 +365,197 @@ export class DashboardComponent implements OnInit  {
   }
   
   
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+ getRatingDistribution() {
+  this.statisticsService.getRatingDistribution().subscribe({
+    next: (data) => {
+      this.createRatingDistributionChart(data);
+    },
+    error: (error) => {
+      console.error('Error fetching rating distribution data', error);
+    }
+  });
+}
+
+
+createRatingDistributionChart(data: Record<number, number>) {
+  const ctx = document.getElementById('ratingDistributionChart') as HTMLCanvasElement;
+
+  if (ctx) {
+    const labels = Object.keys(data).map(key => `${+key -20 } - ${key}`);
+    const values = Object.values(data);
+
+    const config: ChartConfiguration<'bar'> = {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Rating Distribution',
+          data: values,
+          backgroundColor: 'rgba(105, 108, 255, 0.6)',
+          borderColor: 'rgba(105, 108, 255, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: (tooltipItem) => {
+                const label = tooltipItem.label as string;
+                const value = tooltipItem.raw as number;
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Ratings'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Frequency'
+            }
+          }
+        }
+      }
+    };
+
+    new Chart(ctx, config);
+    console.log('Rating distribution chart created successfully');
+  } else {
+    console.error('Canvas element not found');
+  }
+}
   
   
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  getParkingsByDayOfWeek() {
+    this.statisticsService.getParkingsByDayOfWeek().subscribe({
+      next:(data) => { // Spécifiez le type attendu ici
+        this.ParkingsByDayOfWeek = data;
+        this.createDayOfWeekChart();
+      },
+      error: (error) => {
+        console.error('Error fetching parking data', error);
+      }
+    });
+  }
+
+
+  createDayOfWeekChart() {
+    const labels = Object.keys(this.ParkingsByDayOfWeek);
+    const data = Object.values(this.ParkingsByDayOfWeek);
+
+    const chartData = {
+      labels: labels,
+      datasets: [{
+        label: 'Parkings actifs par jour',
+        data: data,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(153, 102, 255)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 206, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const config: ChartConfiguration<'doughnut', number[], string> = {
+      type: 'doughnut',
+      data: chartData,
+    };
+
+    const ctx = document.getElementById('dayChart') as HTMLCanvasElement;
+    new Chart(ctx, config);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  
+getSurfaceDistribution() {
+  this.statisticsService.getSurfaceDistribution().subscribe({
+    next: (data: { name: string; surface: number }[]) => {
+      const labels = data.map((item) => item.name);
+      const surfaces = data.map((item) => item.surface);
+      this.createSurfaceDistributionRadarChart(labels, surfaces);
+    },
+    error: (error) => {
+      console.error('Error fetching surface distribution data', error);
+    }
+  });
+}
+
+
+
+
+public chart: Chart | undefined;
+
+createSurfaceDistributionRadarChart(labels: string[], data: number[]) {
+  if (this.chart) {
+    this.chart.destroy();
+  }
+
+  const chartData = {
+    labels: labels,
+    datasets: [{
+      label: 'Superficie des Parkings',
+      data: data,
+      backgroundColor: 'rgba(105, 108, 255, 0.4)',
+      borderColor: 'rgba(105, 108, 255, 1)',
+      borderWidth: 1
+    }]
+  };
+
+  const config: ChartConfiguration<'radar', number[], string> = {
+    type: 'radar',
+    data: chartData,
+    options: {
+      scales: {
+        r: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1000
+          },
+          angleLines: {
+            display: true
+          },
+          suggestedMin: 0,
+          suggestedMax: Math.max(...data) + 500
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        }
+      }
+    }
+  };
+
+  const ctx = document.getElementById('radarChart') as HTMLCanvasElement;
+  this.chart = new Chart(ctx, config);
+}
+
+
 
 
 }

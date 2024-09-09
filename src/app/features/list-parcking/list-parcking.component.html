@@ -1,20 +1,20 @@
 <!-- Content -->
 
 <div *ngIf="parkings.length !== 0" class="container-xxl flex-grow-1 container-p-y">
-
+  <app-confirmation-alert (confirmed)="onConfirmed($event)"></app-confirmation-alert>
   <div>
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">List /</span> Parckings</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">List /</span> Parkings</h4>
   </div>
 
   <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;margin-bottom: 10px;">
     <button [routerLink]="['/parkings','add']" type="button" class="btn btn-primary" style="height: 40px;">Add New</button>
     <div class="form-check form-switch mb-2">
       <input (change)="getParkingsActive($event)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
-      <label class="form-check-label" for="flexSwitchCheckChecked">Parcking Active</label>
+      <label class="form-check-label" for="flexSwitchCheckChecked">Parking Active</label>
     </div>
     <div class="form-check form-switch mb-2">
       <input (change)="getParkingsNonActive($event)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
-      <label class="form-check-label" for="flexSwitchCheckChecked">Parcking Non Active</label>
+      <label class="form-check-label" for="flexSwitchCheckChecked">Parking No Active</label>
     </div>
     <div class="input-group input-group-merge" style="width: 30% ;">
       <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
@@ -30,13 +30,13 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nom</th>
+            <th>Name</th>
             <th>Création Date</th>
             <th>Latitude</th>
             <th>Longitude</th>
             <th>Surface</th>
-            <th>Début</th>
-            <th>Fin</th>
+            <th>Start</th>
+            <th>End</th>
             <th>State</th>
             <th>Actions</th>
           </tr>

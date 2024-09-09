@@ -41,7 +41,7 @@ export class ParkingDetailsComponent  implements OnInit{
       (data: ParkingDetails) => {
         this.loadingService.hide();
         this.parking = data;
-        console.log( this.parking);
+        this. calculateServiceStates();
       },
       (error: any) => {
         this.loadingService.hide();

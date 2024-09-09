@@ -8,14 +8,14 @@
         <div class="col-xl">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Add Artisan</h5>
+                    <h5 class="mb-0">Update Artisan</h5>
                     <button [routerLink]="['/Artisans']" routerLinkActive="router-link-active"  type="submit" class="btn btn-primary">Back To List</button>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="updateArtisanForm" (ngSubmit)="onSubmit()">
                         <div class="mb-3">
-                            <label class="form-label" for="nom">Nom</label>
-                            <input type="text" class="form-control" id="nom" placeholder="Nom"
+                            <label class="form-label" for="nom">Last Name</label>
+                            <input type="text" class="form-control" id="nom" placeholder="Last Name"
                                    formControlName="Nom"/>
                             <div *ngIf="updateArtisanForm.get('Nom')?.invalid && (updateArtisanForm.get('Nom')?.dirty || updateArtisanForm.get('Nom')?.touched)" class="form-text">
                                 <div *ngIf="updateArtisanForm.get('Nom')?.errors?.['required']">Nom is required.</div>
@@ -25,8 +25,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="prenom">Prenom</label>
-                            <input type="text" class="form-control" id="prenom" placeholder="Prenom"
+                            <label class="form-label" for="prenom">First Name</label>
+                            <input type="text" class="form-control" id="prenom" placeholder="First Name"
                                    formControlName="Prenom"/>
                             <div *ngIf="updateArtisanForm.get('Prenom')?.invalid && (updateArtisanForm.get('Prenom')?.dirty || updateArtisanForm.get('Prenom')?.touched)" class="form-text">
                                 <div *ngIf="updateArtisanForm.get('Prenom')?.errors?.['required']">Prenom is required.</div>
@@ -47,8 +47,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="tel">Tel</label>
-                            <input type="tel" class="form-control" id="tel" placeholder="Tel"
+                            <label class="form-label" for="tel">Telephone</label>
+                            <input type="tel" class="form-control" id="tel" placeholder="Telephone"
                                    formControlName="Tel"/>
                             <div *ngIf="updateArtisanForm.get('Tel')?.invalid && (updateArtisanForm.get('Tel')?.dirty || updateArtisanForm.get('Tel')?.touched)" class="form-text">
                                 <div *ngIf="updateArtisanForm.get('Tel')?.errors?.['required']">Tel is required.</div>
@@ -67,8 +67,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="anneeExperience">Annee Experience</label>
-                            <input type="number" class="form-control" id="anneeExperience" placeholder="Annee Experience"
+                            <label class="form-label" for="anneeExperience">Experience Year</label>
+                            <input type="number" class="form-control" id="anneeExperience" placeholder="Experience Year"
                                    formControlName="AnneeExperience"/>
                             <div *ngIf="updateArtisanForm.get('AnneeExperience')?.invalid && (updateArtisanForm.get('AnneeExperience')?.dirty || updateArtisanForm.get('AnneeExperience')?.touched)" class="form-text">
                                 <div *ngIf="updateArtisanForm.get('AnneeExperience')?.errors?.['required']">Annee Experience is required.</div>

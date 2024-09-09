@@ -14,8 +14,8 @@
                 <div class="card-body">
                     <form [formGroup]="addArtisanForm" (ngSubmit)="onSubmit()">
                         <div class="mb-3">
-                            <label class="form-label" for="nom">Nom</label>
-                            <input type="text" class="form-control" id="nom" placeholder="Nom"
+                            <label class="form-label" for="nom">Last Name</label>
+                            <input type="text" class="form-control" id="nom" placeholder="Last Name"
                                    formControlName="Nom"/>
                             <div *ngIf="addArtisanForm.get('Nom')?.invalid && (addArtisanForm.get('Nom')?.dirty || addArtisanForm.get('Nom')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('Nom')?.errors?.['required']">Nom is required.</div>
@@ -25,8 +25,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="prenom">Prenom</label>
-                            <input type="text" class="form-control" id="prenom" placeholder="Prenom"
+                            <label class="form-label" for="prenom">First Name</label>
+                            <input type="text" class="form-control" id="prenom" placeholder="First Name"
                                    formControlName="Prenom"/>
                             <div *ngIf="addArtisanForm.get('Prenom')?.invalid && (addArtisanForm.get('Prenom')?.dirty || addArtisanForm.get('Prenom')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('Prenom')?.errors?.['required']">Prenom is required.</div>
@@ -47,8 +47,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="tel">Tel</label>
-                            <input type="tel" class="form-control" id="tel" placeholder="Tel"
+                            <label class="form-label" for="tel">Telephone</label>
+                            <input type="tel" class="form-control" id="tel" placeholder="Telephone"
                                    formControlName="Tel"/>
                             <div *ngIf="addArtisanForm.get('Tel')?.invalid && (addArtisanForm.get('Tel')?.dirty || addArtisanForm.get('Tel')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('Tel')?.errors?.['required']">Tel is required.</div>
@@ -67,8 +67,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="anneeExperience">Annee Experience</label>
-                            <input type="number" class="form-control" id="anneeExperience" placeholder="Annee Experience"
+                            <label class="form-label" for="anneeExperience">Experience Year</label>
+                            <input type="number" class="form-control" id="anneeExperience" placeholder="Experience Year"
                                    formControlName="AnneeExperience"/>
                             <div *ngIf="addArtisanForm.get('AnneeExperience')?.invalid && (addArtisanForm.get('AnneeExperience')?.dirty || addArtisanForm.get('AnneeExperience')?.touched)" class="form-text">
                                 <div *ngIf="addArtisanForm.get('AnneeExperience')?.errors?.['required']">Annee Experience is required.</div>

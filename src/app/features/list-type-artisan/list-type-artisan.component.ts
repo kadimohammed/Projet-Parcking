@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TypeArtisan } from '../../core/models/TypeArtisan.model';
@@ -6,17 +6,20 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { ArtisanTypesService } from '../../core/services/ArtisanTypes.service';
 import { LoadingService } from '../../core/services/loading.service';
+import { AlertMessageComponent } from '../alert-message/alert-message.component';
+import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
 
 @Component({
   selector: 'app-list-type-artisan',
   standalone: true,
-  imports: [RouterLink,NgFor,CommonModule],
+  imports: [RouterLink,NgFor,CommonModule,ConfirmationAlertComponent],
   templateUrl: './list-type-artisan.component.html',
   styleUrl: './list-type-artisan.component.css'
 })
 export class ListTypeArtisanComponent implements OnInit{
   ArtisanTypes: TypeArtisan[] = [];
   FullArtisanTypes: TypeArtisan[] = [];
+  @ViewChild(ConfirmationAlertComponent) confirmation!: ConfirmationAlertComponent;
 
   totalCount: number = 0;
   currentPage: number = 1;
@@ -25,6 +28,8 @@ export class ListTypeArtisanComponent implements OnInit{
 
   searchText: string = '';
   message : MessageState = {message :'',state:true};
+
+  typeIdToDelete: number | null = null;  // Stocke l'ID à supprimer
 
   constructor(
     private artisanTypeService:ArtisanTypesService,
@@ -44,21 +49,12 @@ export class ListTypeArtisanComponent implements OnInit{
         this.loadingService.hide();
         this.ArtisanTypes = data;
         this.updatePaginatedArtisanTypes();
-        this.changeMessage('',true);
       },
       error: (error: HttpErrorResponse) => {
         this.loadingService.hide();
-        this.changeMessage(this.artisanTypeService.errorMessage,false);
     }});
   }
 
-  changeMessage(Msg:string,etat:boolean){
-    this.message.message = Msg;
-    this.message.state = etat;
-    setTimeout(() => {
-      this.message.message = '';
-    }, 3000);
-  }
 
   updatePaginatedArtisanTypes(): void {
     this.totalCount = this.ArtisanTypes.length;
@@ -82,18 +78,25 @@ export class ListTypeArtisanComponent implements OnInit{
   }
 
 
-  deleteArtisanType(typeId : number){
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce type ?')) {
-      this.artisanTypeService.deleteArtisanType(typeId).subscribe(
+  deleteArtisanType(typeId: number): void {
+    this.typeIdToDelete = typeId; 
+    this.confirmation.changeMessage('Are you sure you want to delete this artisan type?');
+  }
+
+  onConfirmed(confirmed: boolean) {
+    if (confirmed && this.typeIdToDelete !== null) {
+      this.artisanTypeService.deleteArtisanType(this.typeIdToDelete).subscribe(
         () => {
-          this.ArtisanTypes = this.ArtisanTypes.filter(p => p.id !== typeId);
-          this.FullArtisanTypes = this.FullArtisanTypes.filter(p => p.id !== typeId);
-          this.changeMessage('Type Artisan supprimé avec succès.',true);
+          this.ArtisanTypes = this.ArtisanTypes.filter(p => p.id !== this.typeIdToDelete);
+          this.FullArtisanTypes = this.FullArtisanTypes.filter(p => p.id !== this.typeIdToDelete);
+          this.typeIdToDelete = null;
         },
         (error: any) => {
-          this.changeMessage(this.artisanTypeService.errorMessage,false);
+          this.typeIdToDelete = null;
         }
       );
+    } else {
+      this.typeIdToDelete = null;  // Réinitialiser si non confirmé
     }
   }
 

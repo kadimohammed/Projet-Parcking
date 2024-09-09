@@ -170,14 +170,11 @@
         </div>
     </div>
 
-
-
-
     <div class="row">
         <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
             <div class="card">
                 <div class="row row-bordered g-0" style="padding: 10px;">
-                    <h5 class="card-header m-0 me-2 pb-3">Répartition des Services par État</h5>
+                    <h5 class="card-header m-0 me-2 pb-3">Distribution of Services by State</h5>
                     <div id="totalRevenueChart" class="px-2"></div>
                     <canvas id="artisanChart" width="400" height="188"></canvas>
                 </div>
@@ -188,8 +185,8 @@
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between pb-0">
                     <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Répartition Clients Parkings</h5>
-                        <small class="text-muted">42.82k Total Sales</small>
+                        <h5 class="m-0 me-2">Client Parking Distribution</h5>
+                        <!-- <small class="text-muted">42.82k Total Sales</small> -->
                     </div>
                     <div class="dropdown">
                         <button class="btn p-0" type="button" id="orderStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -239,7 +236,7 @@
         <div class="col-12 col-lg-8 order-0 order-md-3 order-lg-2 mb-4">
             <div class="card">
                 <div class="row row-bordered g-0" style="padding: 10px;">
-                    <h5 class="card-header m-0 me-2 pb-3">Durée de Stationnement des Clients</h5>
+                    <h5 class="card-header m-0 me-2 pb-3">Customer Parking Duration</h5>
                     <div id="totalRevenueChart" class="px-2"></div>
                     <canvas id="durationChart" width="400" height="188"></canvas>
                 </div>
@@ -249,7 +246,7 @@
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between pb-0">
                     <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Distribution Parkings Jours</h5>
+                        <h5 class="m-0 me-2">Distribution of Parking Days</h5>
                         <!-- <small class="text-muted">42.82k Total Sales</small> -->
                     </div>
                     <div class="dropdown">
@@ -274,12 +271,49 @@
         <!--/ Order Statistics -->
     </div>
 
+    <div class="row">
+        <div class="col-12 col-lg-8 order-0 order-md-3 order-lg-2 mb-4">
+            <div class="card">
+                <div class="row row-bordered g-0" style="padding: 10px;">
+                    <h5 class="card-header m-0 me-2 pb-3">Artisans Rating Distribution</h5>
+                    <div id="totalRevenueChart" class="px-2"></div>
+                    <canvas id="ratingDistributionChart" width="400" height="188"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Surface Distribution</h5>
+                        <small class="text-muted">Top 5 Parkings</small> 
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-0 m-0">
+                        <canvas id="radarChart"></canvas>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
 
 
         <!-- Expense Overview -->
-        <div class="col-md-6 col-lg-4 order-1 mb-4">
+        <!-- <div class="col-md-6 col-lg-4 order-1 mb-4">
             <div class="card h-100">
                 <div class="card-header">
                     <ul class="nav nav-pills" role="tablist">
@@ -330,14 +364,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--/ Expense Overview -->
-
         <!-- Transactions -->
         <div class="col-md-6 col-lg-4 order-2 mb-4">
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title m-0 me-2">Transactions</h5>
+                    <h5 class="card-title m-0 me-2">Type Artisan Count</h5>
                     <div class="dropdown">
                         <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
@@ -354,91 +387,97 @@
                     <ul class="p-0 m-0">
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-success">
+                                    <i class='bx bxs-briefcase' Style="color: #71dd37 "></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Paypal</small>
-                                    <h6 class="mb-0">Send money</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[0].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">+82.6</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[0].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-info">
+                                    <i class='bx bxs-briefcase' Style="color: rgb(3, 195, 236)"></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Wallet</small>
-                                    <h6 class="mb-0">Mac'D</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[1].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">+270.69</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[1].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-primary">
+                                    <i class='bx bxs-briefcase' Style="color: rgb(105, 108, 255)"></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Transfer</small>
-                                    <h6 class="mb-0">Refund</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[2].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">+637.91</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[2].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-warning">
+                                    <i class='bx bxs-briefcase' Style="color: rgb(255, 171, 0)"></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Credit Card</small>
-                                    <h6 class="mb-0">Ordered Food</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[3].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">-838.71</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[3].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-danger">
+                                    <i class='bx bxs-briefcase' Style="color: #e83e8c"></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Wallet</small>
-                                    <h6 class="mb-0">Starbucks</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[4].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">+203.33</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[4].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
-                        <li class="d-flex">
+                        <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                                <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
+                                <span class="avatar-initial rounded" ngClass="bg-label-danger">
+                                    <i class='bx bxs-briefcase' Style="color: #ff3e1d"></i>
+                                </span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <small class="text-muted d-block mb-1">Mastercard</small>
-                                    <h6 class="mb-0">Ordered Food</h6>
+                                    <h6 class="mb-0">{{artisanParTypeCount[5].type}}</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">-92.45</h6>
-                                    <span class="text-muted">USD</span>
+                                    <h6 class="mb-0">{{artisanParTypeCount[5].count}}</h6>
+                                    <span class="text-muted"> Artisans</span>
                                 </div>
                             </div>
                         </li>
@@ -448,5 +487,12 @@
         </div>
         <!--/ Transactions -->
     </div>
+
+
+
 </div>
 <!-- / Content -->
+
+  
+
+  

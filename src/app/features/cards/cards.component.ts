@@ -45,11 +45,9 @@ export class CardsComponent implements OnInit {
     this.artisanService.getTopArtisans().subscribe(
       data => {
         this.artisansTop = data;
-        this.loadingService.hide();
       },
       error => {
         console.error("Error occurred while fetching data:", error);
-        this.loadingService.hide();
       }
     );
   }
@@ -59,9 +57,11 @@ export class CardsComponent implements OnInit {
     this.parkingService.getTopParkings().subscribe(
       data => {
         this.parkingsTop = data;
+        this.loadingService.hide();
       },
       error => {
         console.error("Error occurred while fetching data:", error);
+        this.loadingService.hide();
       }
     );
   }

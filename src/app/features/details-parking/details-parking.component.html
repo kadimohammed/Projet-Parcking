@@ -74,7 +74,7 @@
                       </div>
                   </div><br>
 
-                  <div class="counter">
+                  <!-- <div class="counter">
                       <div class="row">
                           <div class="col-6 col-lg-3">
                               <div class="count-data text-center">
@@ -101,7 +101,7 @@
                               </div>
                           </div>
                       </div>
-                  </div>
+                  </div> -->
               </div>
             </section><br>
 
@@ -140,9 +140,9 @@
               <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
             </div>
             <div class="row g-2">
-              <div class="col mb-2">
-                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 0"
-                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[0].photo.path"
+              <div class="col">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 3"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[3].photo.path"
                   alt="Parking Image">
               </div>
               <div class="col mb-2">
@@ -157,9 +157,9 @@
                   [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[2].photo.path"
                   alt="Parking Image">
               </div>
-              <div class="col">
-                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 3"
-                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[3].photo.path"
+              <div class="col mb-2">
+                <img class="w-100 rounded-3" *ngIf="parking.photoParkings && parking.photoParkings.length > 0"
+                  [src]="'https://localhost:7009/files/ParkingsImages/' + parking.photoParkings[0].photo.path"
                   alt="Parking Image">
               </div>
             </div>

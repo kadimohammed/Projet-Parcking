@@ -12,3 +12,10 @@
 .imageTitle{
     font-size: 20px;
 }
+
+#mapContainer {
+    filter: invert(1);
+  }
+
+  
+  

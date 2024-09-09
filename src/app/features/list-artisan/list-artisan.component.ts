@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { CommonModule, NgFor } from '@angular/common';
@@ -8,16 +8,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { NgModel } from '@angular/forms';
 import { LoadingService } from '../../core/services/loading.service';
+import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
 
 @Component({
   selector: 'app-list-artisan',
   standalone: true,
-  imports: [RouterLink,NgFor,CommonModule,TimeFormatPipe],
+  imports: [RouterLink,NgFor,CommonModule,TimeFormatPipe,ConfirmationAlertComponent],
   templateUrl: './list-artisan.component.html',
   styleUrl: './list-artisan.component.css'
 })
 export class ListArtisanComponent implements OnInit {
-
+  @ViewChild(ConfirmationAlertComponent) confirmation!: ConfirmationAlertComponent;
   Artisans: Artisan[] = [];
   FullArtisans: Artisan[] = [];
   paginatedArtisans: Artisan[] = [];
@@ -32,6 +33,8 @@ export class ListArtisanComponent implements OnInit {
 
   ArtisanActiveInput? : boolean = true;
   ArtisanNonActiveInput? : boolean = true;
+
+  artisanIdToDelete: number | null = null;
 
   constructor(
     private artisanService: ArtisanService,
@@ -48,11 +51,9 @@ export class ListArtisanComponent implements OnInit {
         this.Artisans = data;
         this.FullArtisans = data;
         this.updatePaginatedArtisans();
-        this.changeMessage('',true);
         this.loadingService.hide();
       },
       error: (error: HttpErrorResponse) => {
-        this.changeMessage(this.artisanService.errorMessage,false);
         this.loadingService.hide();
     }});
   }
@@ -79,30 +80,30 @@ export class ListArtisanComponent implements OnInit {
   }
 
 
-  deleteArtisan(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce parking ?')) {
-      this.artisanService.deleteArtisan(id).subscribe(
+  deleteArtisan(typeId: number): void {
+    this.artisanIdToDelete = typeId; 
+    this.confirmation.changeMessage('Are you sure you want to delete this parking?');
+  }
+
+  onConfirmed(confirmed: boolean) {
+    if (confirmed && this.artisanIdToDelete !== null) {
+      this.artisanService.deleteArtisan(this.artisanIdToDelete).subscribe(
         () => {
-          this.Artisans = this.Artisans.filter(p => p.id !== id);
+          this.Artisans = this.Artisans.filter(p => p.id !== this.artisanIdToDelete);
           this.FullArtisans  = this.Artisans;
           this.updatePaginatedArtisans();
-          this.changeMessage('Artisan supprimé avec succès.',true);
+          this.artisanIdToDelete = null;
         },
         (error: any) => {
-          this.changeMessage(this.artisanService.errorMessage,false);
+          this.artisanIdToDelete = null;
         }
       );
+    } else {
+      this.artisanIdToDelete = null;
     }
   }
 
 
-  changeMessage(Msg:string,etat:boolean){
-    this.message.message = Msg;
-    this.message.state = etat;
-    setTimeout(() => {
-      this.message.message = '';
-    }, 3000);
-  }
 
   getArtisanActive(event: Event){
     const isChecked = (event.target as HTMLInputElement).checked;

@@ -40,6 +40,12 @@ export class ParkingService {
     return this.http.get<ParkingDetails>(url);
   }
 
+  // Méthode pour obtenir un parking par ID
+  getParkingV2(id: number): Observable<ParkingDetails> {
+    const url = `${this.apiUrl}/GetparkById/${id}`;
+    return this.http.get<ParkingDetails>(url);
+  }
+
   deleteParking(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url);

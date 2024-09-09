@@ -1,3 +1,4 @@
+<app-alert-message></app-alert-message>
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Add New Parking</h4>
@@ -8,6 +9,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Add Parking</h5>
+                    <button [routerLink]="['/parkings']"  type="submit" class="btn btn-primary">Back To List</button>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="addParkingForm" (ngSubmit)="onSubmit()">
@@ -26,11 +28,13 @@
                             </div>
                         </div>
 
+                        <div id="mapContainer" #mapContainer style="height: 400px; width: 100%;"></div>
+                        <br>
                         <div class="mb-3">
                             <label class="form-label" for="Latitude">Latitude</label>
                             <div class="input-group input-group-merge">
                                 <span id="LatitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
-                                <input type="number" class="form-control" id="Latitude"
+                                <input type="text" class="form-control" id="Latitude"
                                        placeholder="Latitude"
                                        formControlName="Latitude"/>
                             </div>
@@ -44,7 +48,7 @@
                             <label class="form-label" for="Longitude">Longitude</label>
                             <div class="input-group input-group-merge">
                                 <span id="LongitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
-                                <input type="number" class="form-control" id="Longitude"
+                                <input type="text" class="form-control" id="Longitude"
                                        placeholder="Longitude"
                                        formControlName="Longitude"/>
                             </div>

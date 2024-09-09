@@ -7,6 +7,7 @@ import { Lot } from '../models/lot.model';
 import { ClientParking } from '../models/client-parking.model';
 import { ArtisansTopVM } from '../ViewModels/ArtisansTopVM';
 import { ClientParkingStatisticVM } from '../ViewModels/ClientParkingStatisticVM';
+import { ArtisanParTypeCount } from '../ViewModels/ArtisanParTypeCountVM';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,20 @@ export class StatisticsService {
   getClientsByParking(): Observable<ClientParkingStatisticVM[]> {
     return this.http.get<ClientParkingStatisticVM[]>(this.apiUrl+"/ClientsByParking");
   }
+
+  getRatingDistribution(): Observable<Record<number, number>> {
+    return this.http.get<Record<number, number>>(`${this.apiUrl}/RatingDistribution`);
+  }
+
+
+  getSurfaceDistribution(): Observable<{ name: string; surface: number }[]> {
+    return this.http.get<{ name: string; surface: number }[]>(`${this.apiUrl}/SurfaceDistribution`);
+  }
+
+  getArtisanParTypeCount(): Observable<ArtisanParTypeCount[]> {
+    return this.http.get<ArtisanParTypeCount[]>(`${this.apiUrl}/ArtisanParTypeCount`);
+  }
+  
   
 }
 
