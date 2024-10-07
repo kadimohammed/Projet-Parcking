@@ -8,7 +8,7 @@
               <img src="https://localhost:7009/files/ProfileImages/{{ Artisan.photo }}"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
+              <button [routerLink]="['/Artisans/edit/', Artisan.id]"  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
                 Update Artisan
               </button>
             </div>
@@ -41,9 +41,11 @@
                   <li>
                     <h6 class="card-title"><b>Type :</b> {{Artisan.type.libelle}}</h6>
                   </li>
-                  <li>
-                    <h6 class="card-title"><b>Adress :</b> {{Artisan.adresse}}</h6>
-                  </li>
+                  @if(Artisan.adresse){
+                    <li>
+                      <h6 class="card-title"><b>Adress :</b> {{Artisan.adresse}}</h6>
+                    </li>
+                  }
                   <li>
                     <h6 class="card-title"><b>Email :</b> {{Artisan.email}}</h6>
                   </li>
@@ -67,10 +69,13 @@
                       } 
                     </h6>
                   </li>
-                  <li>
-                    <h6 class="card-title"><b>Description :</b></h6>
-                    <p class="font-italic mb-1">{{Artisan.description}}</p>
-                  </li>
+                  @if(Artisan.description){
+                    <li>
+                      <h6 class="card-title"><b>Description :</b></h6>
+                      <p class="font-italic mb-1">{{Artisan.description}}</p>
+                    </li>
+                  }
+                  
                 </ul>
               </div>
             </div>

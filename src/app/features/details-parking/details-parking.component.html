@@ -12,7 +12,10 @@
                   <div class="row align-items-center flex-row-reverse">
                       <div class="col-lg-6">
                           <div class="about-text go-to">
+                            <div class="d-flex justify-content-between align-items-center">
                               <h6 class="theme-color lead"><b>{{parking.nomParcking}}</b></h6>
+                              <button [routerLink]="['/parkings']"  type="submit" class="btn btn-primary">Back To List</button>
+                             </div>
                               <p style="color: rgb(153, 98, 255);"> {{ parking.adresse }}</p>
                               <div class="row about-list">
                                   <div class="col-md-6">

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
 import { LoadingService } from '../../core/services/loading.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-parking-details',
@@ -24,11 +25,14 @@ export class ParkingDetailsComponent  implements OnInit{
   constructor(
     private route : ActivatedRoute,
     private parkingService: ParkingService,
-    private loadingService: LoadingService){
+    private loadingService: LoadingService,
+    private titleService: Title
+  ){
 
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | PARKING-DETAILS');
     this.loadingService.show();
     const id = this.route.snapshot.params['id'];
     this.getParking(id);

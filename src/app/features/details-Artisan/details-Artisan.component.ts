@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ServiceEtat } from '../../core/models/service-etat.enum';
 import { LoadingService } from '../../core/services/loading.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-details-Artisan',
@@ -30,10 +31,12 @@ export class DetailsArtisanComponent implements OnInit {
   constructor(
     private artisanService: ArtisanService,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | ARTISAN-DETAILS');
     this.loadingService.show();
     this.artisanId = +this.route.snapshot.paramMap.get('id')!;
     this.getArtisan(this.artisanId);

@@ -10,6 +10,7 @@ import { AlertMessageComponent } from '../alert-message/alert-message.component'
 import { LoadingService } from '../../core/services/loading.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-add-parking',
   standalone: true,
@@ -33,10 +34,12 @@ export class AddParkingComponent implements OnInit {
     private router: Router,
     private parkingFormService: ParkingFormService,
     private imageUploadService: ImageUploadService,
-    private loadingService : LoadingService
+    private loadingService : LoadingService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | ADD-PARKING');
     this.initializeMap();
     this.addParkingForm = this.parkingFormService.createAddParkingForm();
   }
@@ -72,60 +75,66 @@ export class AddParkingComponent implements OnInit {
     });
 }
 
-
-  onSubmit() {
-    if (this.addParkingForm.valid) {
-      this.loadingService.show();
-      const parkingData = this.addParkingForm.value as Record<string, any>;
+onSubmit() {
+  if (this.addParkingForm.valid) {
+    this.loadingService.show();
+    const parkingData = this.addParkingForm.value as Record<string, any>;
   
-      // Ensure Jours is an array of boolean values
-      const joursArray = this.addParkingForm.get('Jours') as FormArray;
-      parkingData['Jours'] = joursArray.controls.map(control => control.value); // Get boolean values
-  
-      const formData = new FormData();
-  
-      for (const key in parkingData) {
-        if (parkingData.hasOwnProperty(key)) {
-          if (key === 'photoParkings') {
-            const photos = parkingData[key];
-            if (photos && photos.length) {
-              for (let i = 0; i < photos.length; i++) {
-                formData.append('photoParkings', photos[i]);
-              }
+    // Ensure Jours is an array of boolean values
+    const joursArray = this.addParkingForm.get('Jours') as FormArray;
+    parkingData['Jours'] = joursArray.controls.map(control => control.value); // Get boolean values
+    
+    const formData = new FormData();
+    
+    for (const key in parkingData) {
+      if (parkingData.hasOwnProperty(key)) {
+        if (key === 'photoParkings') {
+          // Gestion des images
+          const photos = parkingData[key];
+          if (photos && photos.length) {
+            for (let i = 0; i < photos.length; i++) {
+              formData.append('photoParkings', photos[i]);
             }
-          } else if (key === 'Jours') {
-            // Append each boolean value in Jours as a separate entry
-            parkingData['Jours'].forEach((day: boolean, index: number) => {
-              formData.append(`Jours[${index}]`, String(day)); // Append each day as a string
-            });
+          }
+        } else if (key === 'Jours') {
+          // Ajouter chaque jour de travail comme une valeur booléenne
+          parkingData['Jours'].forEach((day: boolean, index: number) => {
+            formData.append(`Jours[${index}]`, String(day));
+          });
+        } else {
+          // Vérifier si le champ est Latitude ou Longitude et remplacer les points par des virgules
+          if (key === 'Latitude' || key === 'Longitude') {
+            const valueWithComma = parkingData[key].toString().replace('.', ',');
+            formData.append(key, valueWithComma);
           } else {
             formData.append(key, parkingData[key]);
           }
         }
       }
-  
-      // Log FormData contents for debugging
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
-  
-      this.parkingService.addParking(formData).subscribe(
-        response => {
-          this.loadingService.hide();
-          this.message.changeMessage('Parking added successfully.',true);
-        },
-        error => {
-          this.loadingService.hide();
-          this.message.changeMessage('Error adding parking.',false);
-          console.log(error.error);
-        }
-      );
-    } else {
-      this.loadingService.hide();
-      this.message.changeMessage('Form is invalid',false);
     }
+
+    // Log FormData contents for debugging
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    this.parkingService.addParking(formData).subscribe(
+      response => {
+        this.loadingService.hide();
+        this.message.changeMessage('Parking added successfully.', true);
+      },
+      error => {
+        this.loadingService.hide();
+        this.message.changeMessage('Error adding parking.', false);
+        console.log(error.error);
+      }
+    );
+  } else {
+    this.loadingService.hide();
+    this.message.changeMessage('Form is invalid', false);
   }
-  
+}
+
   
   
 

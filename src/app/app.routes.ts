@@ -40,7 +40,7 @@ export const routes: Routes = [
                 component: DashboardComponent
             },
             {
-                path: 'cards',
+                path: 'TendencyNews',
                 component: CardsComponent
             }
         ]

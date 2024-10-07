@@ -4,6 +4,7 @@ import 'leaflet.markercluster';
 import { ParkingService } from '../../core/services/parking.service';
 import { Parking } from '../../core/models/parcking.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-parkings-maps',
@@ -16,7 +17,12 @@ export class ParkingsMapsComponent implements OnInit {
   private parkings: Parking[] = [];
 
 
-  constructor(private parkingService: ParkingService,private router : Router,private route: ActivatedRoute) { }
+  constructor(
+    private parkingService: ParkingService,
+    private router : Router,
+    private route: ActivatedRoute,
+    private titleService: Title
+  ) { }
 
   private customIcon = L.icon({
     iconUrl: 'https://www.iconpacks.net/icons/2/free-parking-sign-icon-2526-thumb.png', // chemin vers votre icône personnalisée
@@ -26,6 +32,7 @@ export class ParkingsMapsComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | PARKINGS-MAP');
     this.parkingId = +this.route.snapshot.paramMap.get('id')!;
     console.log(this.parkingId);
     if(this.parkingId == 0){
@@ -56,7 +63,7 @@ export class ParkingsMapsComponent implements OnInit {
   }
 
   loadParkingById() :void{
-    this.parkingService.getParking(this.parkingId).subscribe(
+    this.parkingService.getParkingV2(this.parkingId).subscribe(
       data => {
         if (data) {
           this.parkings.push(data);

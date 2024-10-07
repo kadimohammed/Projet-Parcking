@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('Login');
+    this.titleService.setTitle('LYPARK | LOGIN');
   }
 
   onSubmit(myForm: NgForm) {
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     if (myForm.valid) {
       this.authService.loginuser(this.user).subscribe({
         next: (response) => {
-          this.router.navigate(['/parkings']);
+          this.router.navigate(['/home/dashboard']);
           this.loadingService.hide();
         },
         error: (error) => {

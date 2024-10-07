@@ -18,6 +18,7 @@ import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { LoadingService } from '../../core/services/loading.service';
 import { ClientParkingStatisticVM } from '../../core/ViewModels/ClientParkingStatisticVM';
 import { ArtisanParTypeCount } from '../../core/ViewModels/ArtisanParTypeCountVM';
+import { Title as TitleService } from '@angular/platform-browser';
 
 //Chart, ChartConfiguration, , Tooltip, Legend
 @Component({
@@ -47,13 +48,15 @@ export class DashboardComponent implements OnInit  {
     private clientService : ClientService,
     private adminService : AuthService,
     private statisticsService : StatisticsService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: TitleService
   ){
     Chart.register(LinearScale,RadarController,RadialLinearScale,ArcElement,CategoryScale,DoughnutController , LineController, PointElement ,LineElement, BarElement,BarController, Title, Tooltip, Legend);
     this.loadingService.show();
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | DASHBOARD');
     this.getParkings();
     this.getArtisans();
     this.getClients();

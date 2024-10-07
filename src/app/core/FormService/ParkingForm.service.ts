@@ -10,8 +10,8 @@ export class ParkingFormService {
 
   createAddParkingForm(): FormGroup {
     return this.fb.group({
-      Latitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-      Longitude: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+      Latitude: ['', [Validators.required]],
+      Longitude: ['', [Validators.required]],
       NomParcking: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       Adresse: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       Surface: ['', [Validators.required, Validators.min(50)]],

@@ -9,6 +9,7 @@ import { ArtisanService } from '../../core/services/artisan.service';
 import { LoadingService } from '../../core/services/loading.service';
 import { AlertMessageComponent } from '../alert-message/alert-message.component';
 import { RouterLink } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-artisan',
@@ -30,10 +31,12 @@ export class AddArtisanComponent implements OnInit {
     private artisanForm: ArtisanFormService,
     private artisanTypesService: ArtisanTypesService,
     private artisanService: ArtisanService,
-    private loadingService : LoadingService
+    private loadingService : LoadingService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | ADD-ARTISAN');
     this.loadArtisanTypes();
     this.addArtisanForm = this.artisanForm.createAddArtisanForm();
   }
@@ -54,7 +57,7 @@ export class AddArtisanComponent implements OnInit {
     this.file = event.target.files[0];
   
     const allowedExtensions = ['.jpg', '.png', '.jpeg'];
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 1 * 1024 * 1024;
     const fileExtension = this.file?.name.split('.').pop()?.toLowerCase();
     this.addArtisanForm.get('Photo')?.setErrors(null);
   
@@ -65,7 +68,7 @@ export class AddArtisanComponent implements OnInit {
       }
   
       if (this.file.size > maxSize) {
-        this.addArtisanForm.get('Photo')?.setErrors({ invalidFiles: ['Image size must be less than 5 MB.'] });
+        this.addArtisanForm.get('Photo')?.setErrors({ invalidFiles: ['Image size must be less than 1 MB.'] });
         return;
       }
       this.formData.set('Photo', this.file);

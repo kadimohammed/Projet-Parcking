@@ -34,7 +34,7 @@
                             <label class="form-label" for="Latitude">Latitude</label>
                             <div class="input-group input-group-merge">
                                 <span id="LatitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
-                                <input type="text" class="form-control" id="Latitude"
+                                <input type="number" class="form-control" id="Latitude"
                                        placeholder="Latitude"
                                        formControlName="Latitude"/>
                             </div>
@@ -48,7 +48,7 @@
                             <label class="form-label" for="Longitude">Longitude</label>
                             <div class="input-group input-group-merge">
                                 <span id="LongitudeIcon" class="input-group-text"><i class='bx bx-current-location'></i></span>
-                                <input type="text" class="form-control" id="Longitude"
+                                <input type="number" class="form-control" id="Longitude"
                                        placeholder="Longitude"
                                        formControlName="Longitude"/>
                             </div>
@@ -152,10 +152,11 @@
                             <div *ngIf="addParkingForm.get('photoParkings')?.invalid" class="form-text">
                                 <div *ngIf="addParkingForm.get('photoParkings')?.errors?.['required']">At least one photo is required.</div>
                                 <div *ngIf="addParkingForm.get('photoParkings')?.errors?.['invalidFiles']">
-                                    <div *ngFor="let error of addParkingForm.get('photoParkings')?.errors?.['invalidFiles'].errors">{{ error }}</div>
+                                    <div *ngFor="let error of addParkingForm.get('photoParkings')?.errors?.['invalidFiles']">{{ error }}</div>
                                 </div>
-                            </div>
+                            </div>                            
                         </div>
+                        
 
 
                         <div *ngIf="addParkingForm.get('photoParkings')?.valid && uploadedImages.length > 0" class="row mb-5">

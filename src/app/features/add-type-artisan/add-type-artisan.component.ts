@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MessageState } from '../../core/ViewModels/MessageState';
 import { AlertMessageComponent } from '../alert-message/alert-message.component';
 import { LoadingService } from '../../core/services/loading.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-type-artisan',
@@ -25,10 +26,12 @@ export class AddTypeArtisanComponent {
   (
     private typeForm : ArtisanTypesForm,
     private artisanTypesSrvice:ArtisanTypesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: Title
   ){}
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | ADD-TYPE-ARTISAN');
     this.addtypeForm = this.typeForm.createAddTypeArtisanForm();
   }
 

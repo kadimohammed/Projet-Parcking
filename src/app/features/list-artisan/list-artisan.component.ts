@@ -9,6 +9,7 @@ import { MessageState } from '../../core/ViewModels/MessageState';
 import { NgModel } from '@angular/forms';
 import { LoadingService } from '../../core/services/loading.service';
 import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list-artisan',
@@ -38,9 +39,12 @@ export class ListArtisanComponent implements OnInit {
 
   constructor(
     private artisanService: ArtisanService,
-    private loadingService: LoadingService) { }
+    private loadingService: LoadingService,
+    private titleService: Title
+  ) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | ARTISANS-LIST');
     this.loadArtisans();
   }
 
@@ -82,7 +86,7 @@ export class ListArtisanComponent implements OnInit {
 
   deleteArtisan(typeId: number): void {
     this.artisanIdToDelete = typeId; 
-    this.confirmation.changeMessage('Are you sure you want to delete this parking?');
+    this.confirmation.changeMessage('Are you sure you want to delete this Artisan?');
   }
 
   onConfirmed(confirmed: boolean) {

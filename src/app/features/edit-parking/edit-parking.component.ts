@@ -6,25 +6,35 @@ import { ParkingService } from '../../core/services/parking.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { Title } from '@angular/platform-browser';
+import { LoadingService } from '../../core/services/loading.service';
+import { AlertMessageComponent } from '../alert-message/alert-message.component';
 
 @Component({
   selector: 'app-edit-parking',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,RouterLink],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,RouterLink,AlertMessageComponent],
   templateUrl: './edit-parking.component.html',
   styleUrl: './edit-parking.component.css'
 })
 export class EditParkingComponent {
+  @ViewChild(AlertMessageComponent) message!: AlertMessageComponent;
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   @Input() parking : Parking = {} as Parking;
   parkingId: number  = 0;
   map!: L.Map;
   marker!: L.Marker;
 
-  constructor(private parkingService : ParkingService,private router : Router,private route: ActivatedRoute){
+  constructor(private parkingService : ParkingService,
+    private router : Router,
+    private route: ActivatedRoute,
+    private titleService: Title,
+    private loadingService : LoadingService
+  ){
   }
   
   ngOnInit() {
+    this.titleService.setTitle('LYPARK | UPDATE-PARKIG');
     // Get the parking ID from the route parameters
     this.parkingId = +this.route.snapshot.paramMap.get('id')!;
     this.loadParking();
@@ -50,7 +60,6 @@ export class EditParkingComponent {
   
     // Créer le marqueur avec les coordonnées initiales (si disponibles)
     if (this.parking.latitude && this.parking.longitude) {
-      console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       this.marker = L.marker([this.parking.latitude, this.parking.longitude], { icon: customIcon })
         .bindPopup(`${this.parking.nomParcking} \n ${this.parking.latitude}, ${this.parking.longitude}`)
         .addTo(this.map);
@@ -94,16 +103,19 @@ export class EditParkingComponent {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
+      this.loadingService.show();
       // Format the times before sending them
       this.parking.timeStartWork = this.formatTime(this.parking.timeStartWork);
       this.parking.timeEndWork = this.formatTime(this.parking.timeEndWork);
 
       this.parkingService.updateParking(this.parking).subscribe(
         response => {
-          console.log('Parking updated successfully:', response);
-          this.router.navigate(['/parkings']); // Redirect after successful update
+          this.loadingService.hide();
+          this.message.changeMessage('Parking Updated successfully.', true);
         },
         error => {
+          this.loadingService.hide();
+          this.message.changeMessage('Error Update parking.', false);
           console.error('Error updating parking:', error);
         }
       );

@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { ClientService } from '../../core/services/client.service';
 import { Client } from '../../core/models/client.model';
 import { LoadingService } from '../../core/services/loading.service';
+import { Title as TitleService } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cards',
@@ -27,12 +28,15 @@ export class CardsComponent implements OnInit {
     private artisanService : ArtisanService,
     private parkingService:ParkingService,
     private clientService : ClientService,
-    private loadingService: LoadingService){
+    private loadingService: LoadingService,
+    private titleService: TitleService
+  ){
 
   }
 
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | TENDENCY-NEWS');
     this.loadingService.show();
     this.getTopArtisans();
     this.getTopParkings();

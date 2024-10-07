@@ -7,7 +7,7 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { Parking } from '../../core/models/parcking.model';
 import { LoadingService } from '../../core/services/loading.service';
 import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
-
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-list-parcking',
   standalone: true,
@@ -30,10 +30,12 @@ export class ListParckingComponent implements OnInit {
 
   constructor(
     private parkingService: ParkingService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | PARKINGS-LIST');
     this.loadingService.show();
     this.loadParkings();
   }
@@ -85,7 +87,7 @@ export class ListParckingComponent implements OnInit {
 
   deleteParking(typeId: number): void {
     this.parkingIdToDelete = typeId; 
-    this.confirmation.changeMessage('Are you sure you want to delete this artisan?');
+    this.confirmation.changeMessage('Are you sure you want to delete this Parking?');
   }
 
   onConfirmed(confirmed: boolean) {

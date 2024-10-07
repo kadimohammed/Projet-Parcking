@@ -7,6 +7,7 @@ import { XmlService } from '../services/xml.service';
 import { ParkingService } from '../services/parking.service';
 import { Parking } from '../models/parking.model';
 import { HttpClient } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-parking-top-view',
@@ -27,13 +28,15 @@ export class ParkingTopViewComponent implements OnInit, AfterViewInit {
     private canvasService: CanvasService,
     private shapeService: ShapeService,
     private xmlService: XmlService,
-    private http: HttpClient
+    private http: HttpClient,
+    private titleService: Title
 
   ) {
     this.parkingService = ParkingService.getInstance(http);
 
   }
   ngOnInit() {
+    this.titleService.setTitle('LYPARK | TOP-VIEW');
     this.loadParkings();
   }
   loadParkings() {

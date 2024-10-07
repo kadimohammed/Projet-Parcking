@@ -8,6 +8,7 @@ import { ArtisanTypesService } from '../../core/services/ArtisanTypes.service';
 import { LoadingService } from '../../core/services/loading.service';
 import { AlertMessageComponent } from '../alert-message/alert-message.component';
 import { ConfirmationAlertComponent } from '../confirmation-alert/confirmation-alert.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list-type-artisan',
@@ -33,12 +34,14 @@ export class ListTypeArtisanComponent implements OnInit{
 
   constructor(
     private artisanTypeService:ArtisanTypesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: Title
   ){
 
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | TYPES-LIST');
     this.loadingService.show();
     this.loadArtisanTypes();
   }

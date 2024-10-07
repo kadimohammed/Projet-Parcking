@@ -7,6 +7,7 @@ import { UpdateArtisanTypeVM } from '../../core/ViewModels/UpdateArtisanTypeVM';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LoadingService } from '../../core/services/loading.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-type-artisan',
@@ -27,10 +28,12 @@ export class UpdateTypeArtisanComponent {
     private artisanTypesSrvice:ArtisanTypesService,
     private router : Router,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private titleService: Title
   ){}
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | UPDATE-TYPE-PARKIG');   
     this.typeId = +this.route.snapshot.paramMap.get('id')!;
     this.getArtisanTypeByID(this.typeId);
     this.updatetypeForm = this.typeForm.createUpdateTypeArtisanForm();

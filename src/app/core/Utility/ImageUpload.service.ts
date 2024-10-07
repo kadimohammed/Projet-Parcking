@@ -6,7 +6,7 @@ import { FormGroup, FormArray, FormControl } from '@angular/forms';
 })
 export class ImageUploadService {
   private allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
-  private maxSizeInMB = 5;
+  private maxSizeInMB = 1;
   private maxSizeInBytes = this.maxSizeInMB * 1024 * 1024;
 
   validateFiles(files: FileList): { isValid: boolean; invalidFiles?: string[] } {

@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { Artisan } from '../../core/models/Artisan.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-artisan',
@@ -35,10 +36,12 @@ export class EditArtisanComponent {
     private artisanTypesService: ArtisanTypesService,
     private artisanService: ArtisanService,
     private loadingService : LoadingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('LYPARK | UPDATE-ARTISAN');
     this.artisanId = +this.route.snapshot.paramMap.get('id')!;
     this.getArtisan(this.artisanId);
     this.loadArtisanTypes();
